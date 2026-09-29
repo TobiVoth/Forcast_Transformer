@@ -1,0 +1,57 @@
+SEASONAL NAIVE_Logs
+
+
+Gesamtdaten: 9768 Tage
+Training:    6839 Tage (70%)
+Validierung: 976 Tage (10%)
+Test:        1953 Tage (20%)
+--------------------------------------------------
+Evaluierung von Horizon 30-Tage
+--------------------------------------------------
+--------------------------------------------------
+Seasonal Naive Model (30-Days Rolling Forecast) - Test Set
+--------------------------------------------------
+Anzahl evaluierter Fenster: 1924
+Durchschnittlicher MSE:  1689.4257
+Durchschnittlicher RMSE: 38.1848
+Durchschnittlicher MAE:  30.2553
+Durchschnittlicher MAPE: 5.7769%
+--------------------------------------------------
+--------------------------------------------------
+Evaluierung von Horizon 96-Tage
+--------------------------------------------------
+--------------------------------------------------
+Seasonal Naive Model (96-Days Rolling Forecast) - Test Set
+--------------------------------------------------
+Anzahl evaluierter Fenster: 1858
+Durchschnittlicher MSE:  1729.8914
+Durchschnittlicher RMSE: 39.6442
+Durchschnittlicher MAE:  30.6734
+Durchschnittlicher MAPE: 5.8566%
+--------------------------------------------------
+--------------------------------------------------
+Evaluierung von Horizon 196-Tage
+--------------------------------------------------
+--------------------------------------------------
+Seasonal Naive Model (196-Days Rolling Forecast) - Test Set
+--------------------------------------------------
+Anzahl evaluierter Fenster: 1758
+Durchschnittlicher MSE:  1784.5183
+Durchschnittlicher RMSE: 41.4586
+Durchschnittlicher MAE:  31.1657
+Durchschnittlicher MAPE: 5.9511%
+--------------------------------------------------
+--------------------------------------------------
+Evaluierung von Horizon 365-Tage
+--------------------------------------------------
+--------------------------------------------------
+Seasonal Naive Model (365-Days Rolling Forecast) - Test Set
+--------------------------------------------------
+Anzahl evaluierter Fenster: 1589
+Durchschnittlicher MSE:  1757.8527
+Durchschnittlicher RMSE: 41.9062
+Durchschnittlicher MAE:  31.0347
+Durchschnittlicher MAPE: 5.9225%
+--------------------------------------------------
+
+Process finished with exit code 0

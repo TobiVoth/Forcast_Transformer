@@ -1,0 +1,57 @@
+CHRONOS MODEL_Logs
+
+# ----------------------------
+# 30 Tage
+# ----------------------------
+
+--- DURCHSCHNITTLICHE TESTDATEN METRIKEN (Rolling Window) ---
+Mean MSE:       902.0090
+Mean RMSE:      27.3700
+Mean MAE:       20.7928
+Mean MAPE:      0.0395
+Anzahl Fenster: 1924
+-------------------------------------------------------------
+
+
+
+
+
+# ----------------------------
+# 96 Tage
+# ----------------------------
+
+--- DURCHSCHNITTLICHE TESTDATEN METRIKEN (Rolling Window) ---
+Mean MSE:       951.1221
+Mean RMSE:      29.1945
+Mean MAE:       21.3545
+Mean MAPE:      0.0406
+Anzahl Fenster: 1858
+
+
+
+
+# ----------------------------
+# 192 Tage
+# ----------------------------
+
+--- DURCHSCHNITTLICHE TESTDATEN METRIKEN (Rolling Window) ---
+Mean MSE:       987.8828
+Mean RMSE:      30.6595
+Mean MAE:       21.7795
+Mean MAPE:      0.0414
+Anzahl Fenster: 1758
+
+
+
+
+# ----------------------------
+# 365 Tage
+# ----------------------------
+
+--- DURCHSCHNITTLICHE TESTDATEN METRIKEN (Rolling Window) ---
+Mean MSE:       964.0987
+Mean RMSE:      30.9121
+Mean MAE:       21.5569
+Mean MAPE:      0.0409
+Anzahl Fenster: 1589
+-------------------------------------------------------------

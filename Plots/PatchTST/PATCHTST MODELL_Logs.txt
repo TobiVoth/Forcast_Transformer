@@ -1,0 +1,523 @@
+PATCHTST MODELL_Logs
+
+2026-09-28 22:10:24.267084
+Gesamtdaten: 9768 Tage
+Training:    6839 Tage (70%)
+Validierung: 976 Tage (10%)
+Test:        1953 Tage (20%)
+--------------------------------------------------
+Evaluirung von Horizon 30-Tage
+--------------------------------------------------
+2026-09-28 22:10:41,443	INFO worker.py:2024 -- Started a local Ray instance.
+
+Starte Hyperparameter-Tuning (kann etwas dauern)...
+C:\Users\tobia\Desktop\24DNI2\5 Semester\Methoden der KI\Forcast_Transformer\.venv\Lib\site-packages\ray\tune\impl\tuner_internal.py:151: RayDeprecationWarning: The `RunConfig` class should be imported from `ray.tune` when passing it to the Tuner. Please update your imports. See this issue for more context and migration options: https://github.com/ray-project/ray/issues/49454. Disable these warnings by setting the environment variable: RAY_TRAIN_ENABLE_V2_MIGRATION_WARNINGS=0
+  _log_deprecation_warning(
+[I 2026-09-28 22:10:46,289] A new study created in memory with name: optuna
+╭────────────────────────────────────────────────────────────────────╮
+│ Configuration for experiment     _train_tune_2026-09-28_22-10-46   │
+├────────────────────────────────────────────────────────────────────┤
+│ Search algorithm                 SearchGenerator                   │
+│ Scheduler                        FIFOScheduler                     │
+│ Number of trials                 50                                │
+╰────────────────────────────────────────────────────────────────────╯
+
+View detailed results here: C:/Users/tobia/ray_results/_train_tune_2026-09-28_22-10-46
+To visualize your results with TensorBoard, run: `tensorboard --logdir C:/ray_tmp/session_2026-09-28_22-10-36_678653_26392/artifacts/2026-09-28_22-10-46/_train_tune_2026-09-28_22-10-46/driver_artifacts`
+(_train_tune pid=39624) C:\Users\tobia\Desktop\24DNI2\5 Semester\Methoden der KI\Forcast_Transformer\.venv\Lib\site-packages\ray\tune\integration\pytorch_lightning.py:198: `ray.tune.integration.pytorch_lightning.TuneReportCallback` is deprecated. Use `ray.tune.integration.pytorch_lightning.TuneReportCheckpointCallback` instead.
+
+(_train_tune pid=23992) Seed set to 1
+(_train_tune pid=23992) GPU available: True (cuda), used: True
+(_train_tune pid=23992) TPU available: False, using: 0 TPU cores
+(_train_tune pid=23992) You are using a CUDA device ('NVIDIA GeForce RTX 3050 6GB Laptop GPU') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+(_train_tune pid=23992) LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+(_train_tune pid=23992) `Trainer.fit` stopped: `max_steps=1000` reached.
+2026-09-28 22:49:33,655	INFO tune.py:1007 -- Wrote the latest version of all result files and experiment state to 'C:/Users/tobia/ray_results/_train_tune_2026-09-28_22-10-46' in 0.1730s.
+
+Seed set to 1
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+You are using a CUDA device ('NVIDIA GeForce RTX 3050 6GB Laptop GPU') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+`Trainer.fit` stopped: `max_steps=1000` reached.
+
+=============================================================
+                   AUSWERTUNG HYPERPARAMETER-TUNING           
+=============================================================
+Auswahlkriterium: Kleinster Validation Loss (MSE auf Validierungsset)
+Anzahl getesteter Modelle: 50
+
+--- Rangliste aller 10 getesteten Modelle ---
+    trial_id         loss  input_size  hidden_size  patch_len  stride  encoder_layers  n_heads  linear_hidden_size   dropout  learning_rate  max_steps  val_check_steps  batch_size  early_stop_patience_steps  enable_progress_bar  enable_model_summary   h   loss valid_loss
+0   971a16db   973.027161         512           64         16      16               4        2                  64  0.276985       0.000015       1000               20          32                          5                False                 False  30  MSE()      MSE()
+1   14b00b53   976.019592         512           64         16      16               4        2                  64  0.269359       0.000032       1000               20          32                          5                False                 False  30  MSE()      MSE()
+2   d5241e5e   977.029419         256           64         64      16               2        4                 128  0.287543       0.000088       1000               20          32                          5                False                 False  30  MSE()      MSE()
+3   6a4e4187   977.055542         256           64         32      16               2        4                  64  0.273485       0.000242       1000               20          32                          5                False                 False  30  MSE()      MSE()
+4   d37d3def   977.596741         256           64         32      16               2        4                 128  0.275659       0.000191       1000               20          32                          5                False                 False  30  MSE()      MSE()
+5   e2cb573e   977.753723         256           64         64      16               2        4                 128  0.247651       0.000096       1000               20          32                          5                False                 False  30  MSE()      MSE()
+6   af4be030   977.934082         256          128         64      16               4        1                 128  0.240441       0.000065       1000               20          32                          5                False                 False  30  MSE()      MSE()
+7   a67e72ae   978.529419         256          128         64      16               2        4                 128  0.193094       0.000079       1000               20          32                          5                False                 False  30  MSE()      MSE()
+8   67030a40   979.530579         256          128         64      16               4        1                 128  0.264685       0.000159       1000               20          32                          5                False                 False  30  MSE()      MSE()
+9   931ef634   979.647278         256           64         64      16               2        2                 128  0.253477       0.000291       1000               20          32                          5                False                 False  30  MSE()      MSE()
+10  8077c101   979.696533         256           32         16      16               4        1                 128  0.257950       0.000244       1000               20          32                          5                False                 False  30  MSE()      MSE()
+11  686f4dcf   979.820618         256           64         64      16               2        4                 512  0.242189       0.000147       1000               20          32                          5                False                 False  30  MSE()      MSE()
+12  441be46c   980.032959         256          128         64      16               2        1                 128  0.213450       0.000157       1000               20          32                          5                False                 False  30  MSE()      MSE()
+13  3bc0cacf   981.331055         256           64         64      16               2        4                 128  0.287457       0.000050       1000               20          32                          5                False                 False  30  MSE()      MSE()
+14  58e1db0f   981.484436         256          128         64      16               4        4                 128  0.202036       0.000037       1000               20          32                          5                False                 False  30  MSE()      MSE()
+15  d775873a   982.429626         256          128          8      16               4        1                 128  0.289702       0.000145       1000               20          32                          5                False                 False  30  MSE()      MSE()
+16  270d27af   982.441040         256          128         64      16               4        2                 128  0.204224       0.000015       1000               20          32                          5                False                 False  30  MSE()      MSE()
+17  3f704c20   982.581787         256          128         64      16               2        4                 128  0.153316       0.000184       1000               20          32                          5                False                 False  30  MSE()      MSE()
+18  eced21eb   983.390869         256          128          8      16               4        1                 128  0.255410       0.000056       1000               20          32                          5                False                 False  30  MSE()      MSE()
+19  bab8dc1b   984.383667         512          128         16      16               4        2                  64  0.295977       0.000022       1000               20          32                          5                False                 False  30  MSE()      MSE()
+20  7eb202ee   984.477295         256           64         16       8               4        2                  64  0.223835       0.000013       1000               20          32                          5                False                 False  30  MSE()      MSE()
+21  c7a5d03c   984.983154         256          128         64      16               2        4                 512  0.192894       0.000080       1000               20          32                          5                False                 False  30  MSE()      MSE()
+22  12448b44   985.106628         256          128         64      16               2        1                 128  0.247304       0.000017       1000               20          32                          5                False                 False  30  MSE()      MSE()
+23  38fc36aa   986.479126         256           64         64      16               2        2                 512  0.269962       0.000033       1000               20          32                          5                False                 False  30  MSE()      MSE()
+24  0999010e   986.574890         256          128         64       8               4        4                 128  0.111788       0.000018       1000               20          32                          5                False                 False  30  MSE()      MSE()
+25  433bd38c   986.689636         256           64          8      16               4        1                 128  0.287416       0.000026       1000               20          32                          5                False                 False  30  MSE()      MSE()
+26  047a9a38   986.966675         256          256         64      16               2        4                 128  0.130189       0.000058       1000               20          32                          5                False                 False  30  MSE()      MSE()
+27  f504f836   987.328674         512           64         32      16               2        2                  64  0.240784       0.000016       1000               20          32                          5                False                 False  30  MSE()      MSE()
+28  00949fb1   987.350586         512           64         16      16               4        2                 128  0.244211       0.000064       1000               20          32                          5                False                 False  30  MSE()      MSE()
+29  dcf988d5   987.656616         128           64         16      16               4        2                  64  0.182152       0.000056       1000               20          32                          5                False                 False  30  MSE()      MSE()
+30  a0e48558   987.881714         256           64         64      16               2        4                 128  0.181738       0.000018       1000               20          32                          5                False                 False  30  MSE()      MSE()
+31  d07ef5ab   990.834900         256          128         64      16               1        1                 128  0.273801       0.000596       1000               20          32                          5                False                 False  30  MSE()      MSE()
+32  dea702ab   999.260925         128          256          8      16               4        1                 128  0.131517       0.000064       1000               20          32                          5                False                 False  30  MSE()      MSE()
+33  75e6e4d1  1001.176331        1024           64         16      16               4        1                 256  0.276896       0.000044       1000               20          32                          5                False                 False  30  MSE()      MSE()
+34  4958a90c  1001.723267         128          256          8      16               2        4                  64  0.212170       0.000024       1000               20          32                          5                False                 False  30  MSE()      MSE()
+35  e7a80e3d  1005.966614         512           64         16      16               1        2                  64  0.262051       0.000033       1000               20          32                          5                False                 False  30  MSE()      MSE()
+36  b90d26ee  1006.477722         128           32          8       8               4        2                 512  0.250228       0.000016       1000               20          32                          5                False                 False  30  MSE()      MSE()
+37  55e654e4  1008.943542        1024           64         64      16               4        2                  64  0.262571       0.000094       1000               20          32                          5                False                 False  30  MSE()      MSE()
+38  94941579  1014.930420         256          128         64      16               4        4                 128  0.170677       0.000743       1000               20          32                          5                False                 False  30  MSE()      MSE()
+39  dd04fdcd  1021.639832         256           32         64       8               4        2                 512  0.157813       0.001458       1000               20          32                          5                False                 False  30  MSE()      MSE()
+40  2e8c6d3e  1022.431824         256           64         16      16               4        4                 256  0.230660       0.002907       1000               20          32                          5                False                 False  30  MSE()      MSE()
+41  0eaadd49  1029.239990         512           64         16      16               1        2                  64  0.277842       0.000199       1000               20          32                          5                False                 False  30  MSE()      MSE()
+42  bb4eca65  1043.412231         256          256         64      16               1        1                 512  0.242008       0.000814       1000               20          32                          5                False                 False  30  MSE()      MSE()
+43  7986a542  1046.779419        1024           64         64      16               2        4                 128  0.286050       0.000116       1000               20          32                          5                False                 False  30  MSE()      MSE()
+44  c724c26c  1049.007446         256          256         64      16               4        1                 128  0.295485       0.000890       1000               20          32                          5                False                 False  30  MSE()      MSE()
+45  7577ebaa  1080.927856          32          256         64      16               4        1                 128  0.263520       0.000022       1000               20          32                          5                False                 False  30  MSE()      MSE()
+46  443ea319  1083.932495          32           64         64      16               2        4                 128  0.268807       0.000061       1000               20          32                          5                False                 False  30  MSE()      MSE()
+47  379d2b14  1089.890259          32          128          8       8               1        4                 256  0.111727       0.000011       1000               20          32                          5                False                 False  30  MSE()      MSE()
+48  1e1e94e4  1092.048340        1024           64          8      16               1        2                 128  0.271903       0.000930       1000               20          32                          5                False                 False  30  MSE()      MSE()
+49  bbe65e2f  1113.435791        1024          128         64      16               1        2                 128  0.133446       0.000143       1000               20          32                          5                False                 False  30  MSE()      MSE()
+Modell erfolgreich gespeichert!
+
+Erstelle Basis-Prognose und visualisiere Attention...
+Fehler: Encoder Layer 0 konnte nicht adressiert werden ('PatchTST' object has no attribute 'backbone').
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+
+--- DURCHSCHNITTLICHE TESTDATEN METRIKEN (Rolling Window) ---
+Mean MSE:       803.5055
+Mean RMSE:      25.5876
+Mean MAE:       20.1015
+Anzahl Fenster: 17
+-------------------------------------------------------------
+--------------------------------------------------
+Evaluirung von Horizon 96-Tage
+--------------------------------------------------
+2026-09-28 22:52:52,107	INFO worker.py:2024 -- Started a local Ray instance.
+
+Starte Hyperparameter-Tuning (kann etwas dauern)...
+C:\Users\tobia\Desktop\24DNI2\5 Semester\Methoden der KI\Forcast_Transformer\.venv\Lib\site-packages\ray\tune\impl\tuner_internal.py:151: RayDeprecationWarning: The `RunConfig` class should be imported from `ray.tune` when passing it to the Tuner. Please update your imports. See this issue for more context and migration options: https://github.com/ray-project/ray/issues/49454. Disable these warnings by setting the environment variable: RAY_TRAIN_ENABLE_V2_MIGRATION_WARNINGS=0
+  _log_deprecation_warning(
+[I 2026-09-28 22:52:56,467] A new study created in memory with name: optuna
+╭────────────────────────────────────────────────────────────────────╮
+│ Configuration for experiment     _train_tune_2026-09-28_22-52-56   │
+├────────────────────────────────────────────────────────────────────┤
+│ Search algorithm                 SearchGenerator                   │
+│ Scheduler                        FIFOScheduler                     │
+│ Number of trials                 50                                │
+╰────────────────────────────────────────────────────────────────────╯
+
+View detailed results here: C:/Users/tobia/ray_results/_train_tune_2026-09-28_22-52-56
+To visualize your results with TensorBoard, run: `tensorboard --logdir C:/ray_tmp/session_2026-09-28_22-52-47_747391_26392/artifacts/2026-09-28_22-52-56/_train_tune_2026-09-28_22-52-56/driver_artifacts`
+(_train_tune pid=3164) C:\Users\tobia\Desktop\24DNI2\5 Semester\Methoden der KI\Forcast_Transformer\.venv\Lib\site-packages\ray\tune\integration\pytorch_lightning.py:198: `ray.tune.integration.pytorch_lightning.TuneReportCallback` is deprecated. Use (_train_tune pid=904) GPU available: True (cuda), used: True
+(_train_tune pid=904) TPU available: False, using: 0 TPU cores
+(_train_tune pid=904) You are using a CUDA device ('NVIDIA GeForce RTX 3050 6GB Laptop GPU') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+(_train_tune pid=904) LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+2026-09-29 00:16:33,399	INFO tune.py:1007 -- Wrote the latest version of all result files and experiment state to 'C:/Users/tobia/ray_results/_train_tune_2026-09-28_22-52-56' in 0.1154s.
+
+Seed set to 1
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+=============================================================
+                   AUSWERTUNG HYPERPARAMETER-TUNING           
+=============================================================
+Auswahlkriterium: Kleinster Validation Loss (MSE auf Validierungsset)
+Anzahl getesteter Modelle: 50
+
+--- Rangliste aller 10 getesteten Modelle ---
+    trial_id         loss  input_size  hidden_size  patch_len  stride  encoder_layers  n_heads  linear_hidden_size   dropout  learning_rate  max_steps  val_check_steps  batch_size  early_stop_patience_steps  enable_progress_bar  enable_model_summary   h   loss valid_loss
+0   2127b3f2   982.395935        1024           64         64      16               4        4                 512  0.280947       0.000013       1000               20          32                          5                False                 False  96  MSE()      MSE()
+1   12ffa205   983.131226        1024           64         64      16               4        2                 512  0.270363       0.000012       1000               20          32                          5                False                 False  96  MSE()      MSE()
+2   cc76675f   984.600159        1024           64         64      16               4        4                 512  0.243626       0.000016       1000               20          32                          5                False                 False  96  MSE()      MSE()
+3   917ed701   989.209412         512           64         16      16               4        2                 256  0.283462       0.000011       1000               20          32                          5                False                 False  96  MSE()      MSE()
+4   43c32c5b   989.455994         512           64         64      16               4        2                 256  0.275822       0.000020       1000               20          32                          5                False                 False  96  MSE()      MSE()
+5   990f2b05   989.980713         512          128         64      16               4        2                 256  0.274053       0.000014       1000               20          32                          5                False                 False  96  MSE()      MSE()
+6   f0c67760   990.284912         512           64         64      16               4        2                 512  0.282374       0.000036       1000               20          32                          5                False                 False  96  MSE()      MSE()
+7   ee6276b2   990.510193         512           32         64      16               4        4                 256  0.296813       0.000064       1000               20          32                          5                False                 False  96  MSE()      MSE()
+8   521c3b61   990.577637         512           32         64      16               4        4                 256  0.287419       0.000067       1000               20          32                          5                False                 False  96  MSE()      MSE()
+9   22843ab3   991.006226         512           32         64      16               4        2                 256  0.297539       0.000036       1000               20          32                          5                False                 False  96  MSE()      MSE()
+10  bf5500bc   991.112000         512           32         64       8               4        4                  64  0.259368       0.000018       1000               20          32                          5                False                 False  96  MSE()      MSE()
+11  a8170102   991.977295         512           64         16      16               4        2                 128  0.256706       0.000026       1000               20          32                          5                False                 False  96  MSE()      MSE()
+12  2b5f0dbd   991.979919         512           64         16      16               4        2                 256  0.298287       0.000020       1000               20          32                          5                False                 False  96  MSE()      MSE()
+13  d7ae5e21   995.285583         512          128         64      16               4        4                 256  0.270250       0.000046       1000               20          32                          5                False                 False  96  MSE()      MSE()
+14  521edb1d   995.565857         512           32         64       8               4        4                 256  0.270664       0.000067       1000               20          32                          5                False                 False  96  MSE()      MSE()
+15  61d2f814   996.845276         512           32          8      16               4        4                 256  0.298311       0.000119       1000               20          32                          5                False                 False  96  MSE()      MSE()
+16  5683348a   997.235535         512           64         16      16               4        2                  64  0.281533       0.000010       1000               20          32                          5                False                 False  96  MSE()      MSE()
+17  c24a85fa   997.598633         512          128         64       8               4        4                 256  0.249437       0.000011       1000               20          32                          5                False                 False  96  MSE()      MSE()
+18  096563a4   997.762207         512           32         64       8               4        4                 256  0.226246       0.000069       1000               20          32                          5                False                 False  96  MSE()      MSE()
+19  c8903861   999.191711         512           32         32       8               4        4                 256  0.214710       0.000032       1000               20          32                          5                False                 False  96  MSE()      MSE()
+20  b94d64bd  1005.695435        1024           32         64       8               4        4                 512  0.285767       0.000080       1000               20          32                          5                False                 False  96  MSE()      MSE()
+21  cef575fd  1009.886841        1024          128         64       8               4        4                 256  0.257335       0.000010       1000               20          32                          5                False                 False  96  MSE()      MSE()
+22  6decaefd  1012.576660         256           64          8       8               2        2                 512  0.153253       0.000060       1000               20          32                          5                False                 False  96  MSE()      MSE()
+23  84b7a047  1014.332947         512          128         64      16               2        2                 256  0.245788       0.000045       1000               20          32                          5                False                 False  96  MSE()      MSE()
+24  46ac5ec4  1014.875549         256          128         64       8               4        4                 256  0.220029       0.000014       1000               20          32                          5                False                 False  96  MSE()      MSE()
+25  9a6ae657  1015.348633         256           64         64      16               4        2                 512  0.276319       0.000018       1000               20          32                          5                False                 False  96  MSE()      MSE()
+26  131e5736  1015.425537         512           32         64       8               1        4                  64  0.218192       0.000018       1000               20          32                          5                False                 False  96  MSE()      MSE()
+27  1a5698f5  1017.505127         512          128         64      16               1        2                 256  0.284350       0.000019       1000               20          32                          5                False                 False  96  MSE()      MSE()
+28  5ccd98c7  1017.835938         256           32         64       8               4        4                  64  0.289277       0.000021       1000               20          32                          5                False                 False  96  MSE()      MSE()
+29  82db46f8  1021.411011         128           64         16      16               4        4                 128  0.247212       0.000111       1000               20          32                          5                False                 False  96  MSE()      MSE()
+30  50203098  1026.470459         256           32         64      16               4        4                 256  0.283172       0.000270       1000               20          32                          5                False                 False  96  MSE()      MSE()
+31  dc2e4cf2  1027.189331         128           32          8      16               4        2                  64  0.188391       0.000522       1000               20          32                          5                False                 False  96  MSE()      MSE()
+32  73913761  1027.819092         128          256          8      16               2        4                 128  0.248243       0.000111       1000               20          32                          5                False                 False  96  MSE()      MSE()
+33  eec2ee75  1028.961914         128           64          8       8               2        2                 512  0.299791       0.000019       1000               20          32                          5                False                 False  96  MSE()      MSE()
+34  47a40805  1032.501343         128          128         64      16               4        2                 256  0.225163       0.000031       1000               20          32                          5                False                 False  96  MSE()      MSE()
+35  22e115c6  1039.244385         512           32         64       8               4        4                 128  0.251335       0.000442       1000               20          32                          5                False                 False  96  MSE()      MSE()
+36  7974ad26  1043.617432        1024           32         64       8               4        1                 256  0.295318       0.000278       1000               20          32                          5                False                 False  96  MSE()      MSE()
+37  35270e40  1046.487671        1024          128         64       8               2        4                 128  0.295374       0.000021       1000               20          32                          5                False                 False  96  MSE()      MSE()
+38  e0300148  1046.523315         512          128         64       8               1        4                 128  0.248228       0.000027       1000               20          32                          5                False                 False  96  MSE()      MSE()
+39  451007fa  1049.317871         512          128         64       8               4        4                  64  0.263263       0.000075       1000               20          32                          5                False                 False  96  MSE()      MSE()
+40  fc4f364c  1053.961548         256           64         16       8               4        2                  64  0.162248       0.002179       1000               20          32                          5                False                 False  96  MSE()      MSE()
+41  883f177b  1065.177856         512          256         16       8               4        1                 256  0.258761       0.000036       1000               20          32                          5                False                 False  96  MSE()      MSE()
+42  7e5ea071  1070.059082         512          256         64       8               4        4                 256  0.231993       0.000103       1000               20          32                          5                False                 False  96  MSE()      MSE()
+43  9c04ccf5  1073.599731        1024           32         64       8               1        2                 512  0.270251       0.000155       1000               20          32                          5                False                 False  96  MSE()      MSE()
+44  efbca692  1097.796021          32           64         16       8               4        2                 256  0.192816       0.000095       1000               20          32                          5                False                 False  96  MSE()      MSE()
+45  ae739049  1099.991089         256          256         16      16               2        2                  64  0.125627       0.001305       1000               20          32                          5                False                 False  96  MSE()      MSE()
+46  d0e756f1  1103.892944          32          128         16       8               1        1                 256  0.238845       0.000147       1000               20          32                          5                False                 False  96  MSE()      MSE()
+47  b8c38ed6  1123.996582          32          256         32       8               1        1                 256  0.255950       0.000192       1000               20          32                          5                False                 False  96  MSE()      MSE()
+48  6b093cb2  1129.250122          32           32         64       8               4        4                 256  0.194387       0.000181       1000               20          32                          5                False                 False  96  MSE()      MSE()
+49  6548d0f4  1213.296387        1024          128          8       8               2        2                 512  0.167509       0.000214       1000               20          32                          5                False                 False  96  MSE()      MSE()
+Modell erfolgreich gespeichert!
+
+Erstelle Basis-Prognose und visualisiere Attention...
+Fehler: Encoder Layer 0 konnte nicht adressiert werden ('PatchTST' object has no attribute 'backbone').
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+Erstelle rollierende Prognose für Test-Zeitraum...
+
+
+--- DURCHSCHNITTLICHE TESTDATEN METRIKEN (Rolling Window) ---
+Mean MSE:       831.1400
+Mean RMSE:      27.2854
+Mean MAE:       20.4380
+Anzahl Fenster: 6
+-------------------------------------------------------------
+--------------------------------------------------
+Evaluirung von Horizon 192-Tage
+--------------------------------------------------
+2026-09-29 00:20:54,993	INFO worker.py:2024 -- Started a local Ray instance.
+
+Starte Hyperparameter-Tuning (kann etwas dauern)...
+C:\Users\tobia\Desktop\24DNI2\5 Semester\Methoden der KI\Forcast_Transformer\.venv\Lib\site-packages\ray\tune\impl\tuner_internal.py:151: RayDeprecationWarning: The `RunConfig` class should be imported from `ray.tune` when passing it to the Tuner. Please update your imports. See this issue for more context and migration options: https://github.com/ray-project/ray/issues/49454. Disable these warnings by setting the environment variable: RAY_TRAIN_ENABLE_V2_MIGRATION_WARNINGS=0
+  _log_deprecation_warning(
+[I 2026-09-29 00:21:11,994] A new study created in memory with name: optuna
+╭────────────────────────────────────────────────────────────────────╮
+│ Configuration for experiment     _train_tune_2026-09-29_00-21-11   │
+├────────────────────────────────────────────────────────────────────┤
+│ Search algorithm                 SearchGenerator                   │
+│ Scheduler                        FIFOScheduler                     │
+│ Number of trials                 50                                │
+╰────────────────────────────────────────────────────────────────────╯
+
+View detailed results here: C:/Users/tobia/ray_results/_train_tune_2026-09-29_00-21-11
+To visualize your results with TensorBoard, run: `tensorboard --logdir C:/ray_tmp/session_2026-09-29_00-20-50_190167_26392/artifacts/2026-09-29_00-21-11/_train_tune_2026-09-29_00-21-11/driver_artifacts`
+(_train_tune pid=44204) C:\Users\tobia\Desktop\24DNI2\5 Semester\Methoden der KI\Forcast_Transformer\.venv\Lib\site-packages\ray\tune\integration\pytorch_lightning.py:198: `ray.tune.integration.pytorch_lightning.TuneReportCallback` is deprecated. Use `ray.tune.integration.pytorch_lightning.TuneReportCheckpointCallback` instead.
+(_train_tune pid=34984) GPU available: True (cuda), used: True
+(_train_tune pid=34984) TPU available: False, using: 0 TPU cores
+(_train_tune pid=34984) You are using a CUDA device ('NVIDIA GeForce RTX 3050 6GB Laptop GPU') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+(_train_tune pid=34984) LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+2026-09-29 00:51:10,892	INFO tune.py:1007 -- Wrote the latest version of all result files and experiment state to 'C:/Users/tobia/ray_results/_train_tune_2026-09-29_00-21-11' in 0.1409s.
+
+Seed set to 1
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+=============================================================
+                   AUSWERTUNG HYPERPARAMETER-TUNING           
+=============================================================
+Auswahlkriterium: Kleinster Validation Loss (MSE auf Validierungsset)
+Anzahl getesteter Modelle: 50
+
+--- Rangliste aller 10 getesteten Modelle ---
+    trial_id         loss  input_size  hidden_size  patch_len  stride  encoder_layers  n_heads  linear_hidden_size   dropout  learning_rate  max_steps  val_check_steps  batch_size  early_stop_patience_steps  enable_progress_bar  enable_model_summary    h   loss valid_loss
+0   15196dfa   918.497559         512          128         32      16               2        2                  64  0.227724       0.008406       1000               20          32                          5                False                 False  192  MSE()      MSE()
+1   d1f710f3   936.177063         128           32         16       8               4        4                  64  0.294650       0.000473       1000               20          32                          5                False                 False  192  MSE()      MSE()
+2   48cfc046   938.588318         128           64         16      16               4        4                  64  0.167004       0.000173       1000               20          32                          5                False                 False  192  MSE()      MSE()
+3   44257ad6   938.597351         128           32         16       8               4        1                  64  0.133843       0.000264       1000               20          32                          5                False                 False  192  MSE()      MSE()
+4   1355c2b3   939.692383         128           32         16       8               4        4                  64  0.215404       0.000224       1000               20          32                          5                False                 False  192  MSE()      MSE()
+5   429b9639   940.475586         128           32         16      16               4        1                  64  0.141417       0.000575       1000               20          32                          5                False                 False  192  MSE()      MSE()
+6   ae9263ab   941.210510         128           32         16       8               4        4                  64  0.134359       0.000152       1000               20          32                          5                False                 False  192  MSE()      MSE()
+7   83ec7148   942.549683         128           32         16       8               4        4                  64  0.147988       0.000293       1000               20          32                          5                False                 False  192  MSE()      MSE()
+8   d1103638   944.494080         128           64         16      16               4        4                  64  0.130009       0.000183       1000               20          32                          5                False                 False  192  MSE()      MSE()
+9   befbb0ff   948.037842         128           32         16       8               4        4                  64  0.239481       0.001435       1000               20          32                          5                False                 False  192  MSE()      MSE()
+10  309f9a02   950.668762         128           32         16       8               4        4                  64  0.109312       0.000095       1000               20          32                          5                False                 False  192  MSE()      MSE()
+11  bba5b596   952.779114         128           32          8       8               4        1                  64  0.159070       0.000117       1000               20          32                          5                False                 False  192  MSE()      MSE()
+12  fefce96f   952.986755         128           32         16       8               4        2                  64  0.279760       0.000125       1000               20          32                          5                False                 False  192  MSE()      MSE()
+13  52cae1ae   955.235168         128           32         16       8               4        1                 512  0.114263       0.000391       1000               20          32                          5                False                 False  192  MSE()      MSE()
+14  2b157592   957.573303         256          128         16      16               1        2                 512  0.111273       0.000015       1000               20          32                          5                False                 False  192  MSE()      MSE()
+15  b7b330fc   957.860107         512          128         32      16               1        2                  64  0.265608       0.000065       1000               20          32                          5                False                 False  192  MSE()      MSE()
+16  e57d3317   962.372986         256           64         16       8               4        4                  64  0.131822       0.000188       1000               20          32                          5                False                 False  192  MSE()      MSE()
+17  192ca84d   964.941711         256           64         32      16               1        1                 128  0.134653       0.000308       1000               20          32                          5                False                 False  192  MSE()      MSE()
+18  c3c6b03e   965.810913         128           32         16      16               4        4                  64  0.259996       0.000167       1000               20          32                          5                False                 False  192  MSE()      MSE()
+19  8f5f959f   967.337769         128           32         16       8               4        4                  64  0.103634       0.003466       1000               20          32                          5                False                 False  192  MSE()      MSE()
+20  c642e0f3   967.866028         256           32         16       8               4        4                  64  0.100148       0.000446       1000               20          32                          5                False                 False  192  MSE()      MSE()
+21  6ba83b1a   968.109131         128           32         16       8               4        4                 256  0.175214       0.002439       1000               20          32                          5                False                 False  192  MSE()      MSE()
+22  5c1f6e0a   971.058228         128           32         16       8               4        4                  64  0.220231       0.000053       1000               20          32                          5                False                 False  192  MSE()      MSE()
+23  e4920213   971.424927         128           32         16       8               4        4                  64  0.289203       0.000054       1000               20          32                          5                False                 False  192  MSE()      MSE()
+24  896cbf57   972.114563         128           32         32       8               4        4                 128  0.140461       0.000067       1000               20          32                          5                False                 False  192  MSE()      MSE()
+25  ef19bd84   973.900818         128           32         32       8               4        4                  64  0.250529       0.000057       1000               20          32                          5                False                 False  192  MSE()      MSE()
+26  f8ec79a2   974.845764         512          128          8      16               2        1                  64  0.157127       0.003322       1000               20          32                          5                False                 False  192  MSE()      MSE()
+27  f677ec5a   975.374939         256          128         64       8               1        1                 256  0.199443       0.000295       1000               20          32                          5                False                 False  192  MSE()      MSE()
+28  3d4d99d8   976.984070         512          128         32      16               2        1                  64  0.200313       0.000179       1000               20          32                          5                False                 False  192  MSE()      MSE()
+29  7561c113   979.815552         128           32         16       8               4        4                  64  0.186144       0.000019       1000               20          32                          5                False                 False  192  MSE()      MSE()
+30  7b095d7e   981.655090         128           32         16       8               4        4                 512  0.117154       0.000014       1000               20          32                          5                False                 False  192  MSE()      MSE()
+31  3707770a   982.982483         512          128         32      16               2        2                  64  0.285896       0.000261       1000               20          32                          5                False                 False  192  MSE()      MSE()
+32  d368c653   985.193848         512          128         32      16               2        2                 256  0.217089       0.005807       1000               20          32                          5                False                 False  192  MSE()      MSE()
+33  4d0fbeeb   985.423828         256           32          8       8               1        1                 128  0.107441       0.001021       1000               20          32                          5                False                 False  192  MSE()      MSE()
+34  6a974ed3   987.621521         128           32         16       8               2        4                 512  0.240334       0.000013       1000               20          32                          5                False                 False  192  MSE()      MSE()
+35  5ad86b1c   992.757019         256           32         16       8               4        4                  64  0.211782       0.007411       1000               20          32                          5                False                 False  192  MSE()      MSE()
+36  32d8740e   993.146362         512           32         32      16               2        1                  64  0.255334       0.001890       1000               20          32                          5                False                 False  192  MSE()      MSE()
+37  1553ddec   998.849060         128          256         16       8               4        4                  64  0.164254       0.000560       1000               20          32                          5                False                 False  192  MSE()      MSE()
+38  b62f5826  1001.669006         512          128          8       8               4        2                 256  0.282106       0.000145       1000               20          32                          5                False                 False  192  MSE()      MSE()
+39  d06c4d7d  1010.129272         256          128         16       8               2        4                 256  0.284444       0.000514       1000               20          32                          5                False                 False  192  MSE()      MSE()
+40  ddf6b5e5  1019.055725        1024           32         16       8               4        4                  64  0.250147       0.000386       1000               20          32                          5                False                 False  192  MSE()      MSE()
+41  53862e81  1020.701721         512          128          8      16               2        2                 128  0.255361       0.001122       1000               20          32                          5                False                 False  192  MSE()      MSE()
+42  6b19c8f8  1029.776489         512          128         32      16               2        2                  64  0.188223       0.002840       1000               20          32                          5                False                 False  192  MSE()      MSE()
+43  b80ac6b3  1043.774170          32           64          8       8               1        1                 256  0.148856       0.000216       1000               20          32                          5                False                 False  192  MSE()      MSE()
+44  fa2fe699  1051.153076         512          128         32      16               4        2                  64  0.258293       0.007850       1000               20          32                          5                False                 False  192  MSE()      MSE()
+45  b7e3fe69  1058.997681         512          128         32      16               2        1                  64  0.197455       0.001221       1000               20          32                          5                False                 False  192  MSE()      MSE()
+46  b674487c  1069.765137          32           64         16      16               4        4                  64  0.136139       0.000045       1000               20          32                          5                False                 False  192  MSE()      MSE()
+47  4d0a3da0  1070.413574        1024          128         32      16               2        2                  64  0.221463       0.000518       1000               20          32                          5                False                 False  192  MSE()      MSE()
+48  d667c2fe  1078.100220        1024          128         32      16               1        4                 256  0.179163       0.000722       1000               20          32                          5                False                 False  192  MSE()      MSE()
+49  eb111941  1145.276611          32          256          8      16               4        2                 256  0.174133       0.003973       1000               20          32                          5                False                 False  192  MSE()      MSE()
+Modell erfolgreich gespeichert!
+
+Erstelle Basis-Prognose und visualisiere Attention...
+Fehler: Encoder Layer 0 konnte nicht adressiert werden ('PatchTST' object has no attribute 'backbone').
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+Erstelle rollierende Prognose für Test-Zeitraum...
+
+--- DURCHSCHNITTLICHE TESTDATEN METRIKEN (Rolling Window) ---
+Mean MSE:       907.2682
+Mean RMSE:      29.3430
+Mean MAE:       21.2093
+Anzahl Fenster: 3
+-------------------------------------------------------------
+--------------------------------------------------
+Evaluirung von Horizon 365-Tage
+--------------------------------------------------
+2026-09-29 00:52:13,533	INFO worker.py:2024 -- Started a local Ray instance.
+
+Starte Hyperparameter-Tuning (kann etwas dauern)...
+C:\Users\tobia\Desktop\24DNI2\5 Semester\Methoden der KI\Forcast_Transformer\.venv\Lib\site-packages\ray\tune\impl\tuner_internal.py:151: RayDeprecationWarning: The `RunConfig` class should be imported from `ray.tune` when passing it to the Tuner. Please update your imports. See this issue for more context and migration options: https://github.com/ray-project/ray/issues/49454. Disable these warnings by setting the environment variable: RAY_TRAIN_ENABLE_V2_MIGRATION_WARNINGS=0
+  _log_deprecation_warning(
+[I 2026-09-29 00:52:24,973] A new study created in memory with name: optuna
+╭────────────────────────────────────────────────────────────────────╮
+│ Configuration for experiment     _train_tune_2026-09-29_00-52-24   │
+├────────────────────────────────────────────────────────────────────┤
+│ Search algorithm                 SearchGenerator                   │
+│ Scheduler                        FIFOScheduler                     │
+│ Number of trials                 50                                │
+╰────────────────────────────────────────────────────────────────────╯
+
+View detailed results here: C:/Users/tobia/ray_results/_train_tune_2026-09-29_00-52-24
+To visualize your results with TensorBoard, run: `tensorboard --logdir C:/ray_tmp/session_2026-09-29_00-52-02_936596_26392/artifacts/2026-09-29_00-52-24/_train_tune_2026-09-29_00-52-24/driver_artifacts`
+(_train_tune pid=29692) C:\Users\tobia\Desktop\24DNI2\5 Semester\Methoden der KI\Forcast_Transformer\.venv\Lib\site-packages\ray\tune\integration\pytorch_lightning.py:198: `ray.tune.integration.pytorch_lightning.TuneReportCallback` is deprecated. Use `ray.tune.integration.pytorch_lightning.TuneReportCheckpointCallback` instead.
+(_train_tune pid=20328) GPU available: True (cuda), used: True
+(_train_tune pid=20328) TPU available: False, using: 0 TPU cores
+(_train_tune pid=20328) You are using a CUDA device ('NVIDIA GeForce RTX 3050 6GB Laptop GPU') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+(_train_tune pid=20328) LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+2026-09-29 01:44:29,092	INFO tune.py:1007 -- Wrote the latest version of all result files and experiment state to 'C:/Users/tobia/ray_results/_train_tune_2026-09-29_00-52-24' in 0.1237s.
+
+Seed set to 1
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+=============================================================
+                   AUSWERTUNG HYPERPARAMETER-TUNING           
+=============================================================
+Auswahlkriterium: Kleinster Validation Loss (MSE auf Validierungsset)
+Anzahl getesteter Modelle: 50
+
+--- Rangliste aller 10 getesteten Modelle ---
+    trial_id         loss  input_size  hidden_size  patch_len  stride  encoder_layers  n_heads  linear_hidden_size   dropout  learning_rate  max_steps  val_check_steps  batch_size  early_stop_patience_steps  enable_progress_bar  enable_model_summary    h   loss valid_loss
+0   686ca44d   930.441772         256           64         64       8               2        1                 512  0.296282       0.000050       1000               20          32                          5                False                 False  365  MSE()      MSE()
+1   4e58687a   931.950378         256           64         64       8               2        1                 512  0.261220       0.000058       1000               20          32                          5                False                 False  365  MSE()      MSE()
+2   ea5aad90   932.973938         256          128         64       8               2        2                 512  0.230267       0.000022       1000               20          32                          5                False                 False  365  MSE()      MSE()
+3   f1efcfb9   933.056396         256          128         64       8               2        2                 512  0.154164       0.000022       1000               20          32                          5                False                 False  365  MSE()      MSE()
+4   049f1b9d   933.575439         256           64         64       8               2        1                 512  0.253221       0.000032       1000               20          32                          5                False                 False  365  MSE()      MSE()
+5   3cb593f8   935.989807         256           64         64       8               2        1                 512  0.208897       0.000121       1000               20          32                          5                False                 False  365  MSE()      MSE()
+6   dff8be45   937.365417         256          128         64       8               2        2                 512  0.159300       0.000045       1000               20          32                          5                False                 False  365  MSE()      MSE()
+7   3f4d0d8d   938.800842         256          128         64       8               2        2                 512  0.213402       0.000076       1000               20          32                          5                False                 False  365  MSE()      MSE()
+8   907ce068   939.060852         256          128          8       8               2        2                 512  0.271535       0.000013       1000               20          32                          5                False                 False  365  MSE()      MSE()
+9   85c71d8d   939.427063         256           64         64       8               2        2                 512  0.248071       0.000021       1000               20          32                          5                False                 False  365  MSE()      MSE()
+10  eb318588   940.221802         256           64          8       8               2        2                 512  0.243783       0.000074       1000               20          32                          5                False                 False  365  MSE()      MSE()
+11  e2bdc458   940.761414         256          128         16       8               2        2                 512  0.225151       0.000037       1000               20          32                          5                False                 False  365  MSE()      MSE()
+12  a0bc1267   940.857361         256          128         64       8               1        1                 512  0.210239       0.000018       1000               20          32                          5                False                 False  365  MSE()      MSE()
+13  410a641b   940.980469         256           64          8       8               2        1                 512  0.196828       0.000040       1000               20          32                          5                False                 False  365  MSE()      MSE()
+14  d4a3ec83   941.330994         256           64          8       8               2        2                 512  0.272475       0.000082       1000               20          32                          5                False                 False  365  MSE()      MSE()
+15  b645c170   941.464783        1024           64         64       8               2        1                 512  0.288525       0.000020       1000               20          32                          5                False                 False  365  MSE()      MSE()
+16  9d8e4593   941.757263         256           64         64       8               2        1                 512  0.192739       0.000130       1000               20          32                          5                False                 False  365  MSE()      MSE()
+17  c8bf7137   942.542297         256          128          8       8               2        2                 256  0.211279       0.000018       1000               20          32                          5                False                 False  365  MSE()      MSE()
+18  aadb9423   943.628357         512          128         64       8               2        2                 512  0.195615       0.000021       1000               20          32                          5                False                 False  365  MSE()      MSE()
+19  b75a1d27   944.532043         256           64         64       8               2        4                 512  0.241347       0.000014       1000               20          32                          5                False                 False  365  MSE()      MSE()
+20  4eaf8c8d   947.411987         256          256          8      16               2        1                 512  0.167049       0.000019       1000               20          32                          5                False                 False  365  MSE()      MSE()
+21  09abe03f   947.610779         256           64          8      16               2        4                  64  0.169069       0.000063       1000               20          32                          5                False                 False  365  MSE()      MSE()
+22  eb300e52   947.945129         256          256          8      16               2        1                 512  0.251526       0.000023       1000               20          32                          5                False                 False  365  MSE()      MSE()
+23  9dbe7105   948.485474         256           64          8      16               2        4                  64  0.179004       0.000033       1000               20          32                          5                False                 False  365  MSE()      MSE()
+24  dcf116ba   948.511719         256          256          8      16               2        1                 256  0.134787       0.000029       1000               20          32                          5                False                 False  365  MSE()      MSE()
+25  3fafce3b   949.680542        1024           64          8       8               2        1                 512  0.226181       0.000013       1000               20          32                          5                False                 False  365  MSE()      MSE()
+26  0591cc62   950.111511         256           64         64       8               2        2                 512  0.232245       0.000198       1000               20          32                          5                False                 False  365  MSE()      MSE()
+27  30ffacef   953.614380        1024          128          8       8               2        2                 512  0.296719       0.000011       1000               20          32                          5                False                 False  365  MSE()      MSE()
+28  726aa6f5   955.308899         256           32         64       8               2        1                 512  0.228916       0.001044       1000               20          32                          5                False                 False  365  MSE()      MSE()
+29  2004cd8e   955.530640         256          256         16       8               2        2                 512  0.184162       0.000032       1000               20          32                          5                False                 False  365  MSE()      MSE()
+30  c139e67c   972.373657         128          256         32       8               4        2                 512  0.229815       0.000389       1000               20          32                          5                False                 False  365  MSE()      MSE()
+31  5b1b3667   978.723267         128          256         32       8               4        2                 512  0.283777       0.000207       1000               20          32                          5                False                 False  365  MSE()      MSE()
+32  da7b6bd1   981.235168         128          128         16       8               4        1                  64  0.174143       0.000020       1000               20          32                          5                False                 False  365  MSE()      MSE()
+33  461c88a4   987.730164         128           32          8      16               2        1                 512  0.259004       0.000724       1000               20          32                          5                False                 False  365  MSE()      MSE()
+34  66bcb437   989.376953         128          128          8       8               2        2                 512  0.257174       0.000011       1000               20          32                          5                False                 False  365  MSE()      MSE()
+35  614e24ab   990.869202         128          256         16       8               1        2                 128  0.245739       0.000338       1000               20          32                          5                False                 False  365  MSE()      MSE()
+36  1f61b883   994.791443         128           64         64       8               2        2                 512  0.257028       0.000029       1000               20          32                          5                False                 False  365  MSE()      MSE()
+37  23274de6   995.780029         256          128          8      16               1        2                  64  0.265886       0.001350       1000               20          32                          5                False                 False  365  MSE()      MSE()
+38  63e56ae6  1032.616577         256          256          8       8               2        4                  64  0.110572       0.000229       1000               20          32                          5                False                 False  365  MSE()      MSE()
+39  1b5c218a  1036.740112         256           64         64       8               2        1                 512  0.194085       0.000735       1000               20          32                          5                False                 False  365  MSE()      MSE()
+40  872b2662  1057.792603        1024          256         32      16               1        4                 128  0.287343       0.001140       1000               20          32                          5                False                 False  365  MSE()      MSE()
+41  80dd61b2  1072.957520        1024           32         64       8               2        4                 256  0.264989       0.001777       1000               20          32                          5                False                 False  365  MSE()      MSE()
+42  65babff4  1086.380127          32           64         16      16               4        2                 512  0.160342       0.000920       1000               20          32                          5                False                 False  365  MSE()      MSE()
+43  c593a8bf  1112.118530          32          128          8       8               2        2                 512  0.295011       0.000057       1000               20          32                          5                False                 False  365  MSE()      MSE()
+44  d83b88a6  1117.963989          32          256          8      16               2        1                 512  0.149847       0.000148       1000               20          32                          5                False                 False  365  MSE()      MSE()
+45  a44972f5  1123.316772          32          128          8       8               4        2                 512  0.242525       0.000016       1000               20          32                          5                False                 False  365  MSE()      MSE()
+46  6d8ad2c1  1136.113647          32          128         64       8               2        1                 512  0.232216       0.000042       1000               20          32                          5                False                 False  365  MSE()      MSE()
+47  26185e54  1146.058838          32          256         32       8               4        1                 128  0.205532       0.002595       1000               20          32                          5                False                 False  365  MSE()      MSE()
+48  2ba6c105  1148.710205          32          128         64       8               2        2                 512  0.274842       0.000016       1000               20          32                          5                False                 False  365  MSE()      MSE()
+49  06306cec  1189.035400          32           64         64       8               2        2                 128  0.219811       0.000022       1000               20          32                          5                False                 False  365  MSE()      MSE()
+Modell erfolgreich gespeichert!
+
+Erstelle Basis-Prognose und visualisiere Attention...
+Fehler: Encoder Layer 0 konnte nicht adressiert werden ('PatchTST' object has no attribute 'backbone').
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+Erstelle rollierende Prognose für Test-Zeitraum...
+
+
+--- DURCHSCHNITTLICHE TESTDATEN METRIKEN (Rolling Window) ---
+Mean MSE:       899.5038
+Mean RMSE:      29.7882
+Mean MAE:       21.2537
+Anzahl Fenster: 2
+-------------------------------------------------------------
+2026-09-29 01:46:04.888503
+
+Process finished with exit code 0
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------------
+erneute Berechnung des Modells mit verschiedenen Horizon:
+Universalmodell mit Mittelwerten aus den Finetuning Ergebnissen
+------------------------------------------------------------------------------------------------------
+
+# ---------------------------------------
+# 30 Tage
+# ---------------------------------------
+
+Mean MSE:       924.3660
+Mean RMSE:      27.8331
+Mean MAE:       21.5540
+Mean MAPE:      0.0412
+Anzahl Fenster: 1924
+-------------------------------------------------------------
+
+Process finished with exit code 0
+
+
+
+# ---------------------------------------
+# 60 Tage
+# ---------------------------------------
+
+--- DURCHSCHNITTLICHE TESTDATEN METRIKEN (Rolling Window) ---
+Mean MSE:       952.1675
+Mean RMSE:      28.8091
+Mean MAE:       21.8389
+Mean MAPE:      0.0418
+Anzahl Fenster: 1894
+-------------------------------------------------------------
+
+Process finished with exit code 0
+
+
+# ---------------------------------------
+# 96 Tage
+# ---------------------------------------
+
+
+--- DURCHSCHNITTLICHE TESTDATEN METRIKEN (Rolling Window) ---
+Mean MSE:       969.4405
+Mean RMSE:      29.4892
+Mean MAE:       22.0640
+Mean MAPE:      0.0422
+Anzahl Fenster: 1858
+-------------------------------------------------------------
+
+Process finished with exit code 0
+
+# ---------------------------------------
+# 192 Tage
+# ---------------------------------------
+
+--- DURCHSCHNITTLICHE TESTDATEN METRIKEN (Rolling Window) ---
+Mean MSE:       1007.0687
+Mean RMSE:      30.9483
+Mean MAE:       22.4986
+Mean MAPE:      0.0430
+Anzahl Fenster: 1762
+-------------------------------------------------------------
+
+Process finished with exit code 0
+
+
+# ---------------------------------------
+# 365 Tage
+# ---------------------------------------
+
+--- DURCHSCHNITTLICHE TESTDATEN METRIKEN (Rolling Window) ---
+Mean MSE:       972.3177
+Mean RMSE:      31.0512
+Mean MAE:       22.0714
+Mean MAPE:      0.0422
+Anzahl Fenster: 1589
+-------------------------------------------------------------
+
+Process finished with exit code 0
+
+

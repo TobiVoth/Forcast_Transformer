@@ -1,0 +1,292 @@
+ARIMA MODELL_logs
+
+--------------------------------------------------
+Evaluirung von Horizon 30-Tage
+--------------------------------------------------
+Gesamte Tage: 9768
+-> Davon Training: 7814 (bis 2021-05-23)
+-> Davon Test:     1954 (ab 2021-05-24)
+
+Trainiere ARIMA Modell (dies kann einen Moment dauern)...
+Performing stepwise search to minimize aic
+ ARIMA(2,1,2)(0,0,0)[0] intercept   : AIC=inf, Time=2.88 sec
+ ARIMA(0,1,0)(0,0,0)[0] intercept   : AIC=73391.221, Time=0.09 sec
+ ARIMA(1,1,0)(0,0,0)[0] intercept   : AIC=73034.490, Time=0.19 sec
+ ARIMA(0,1,1)(0,0,0)[0] intercept   : AIC=72820.210, Time=0.57 sec
+ ARIMA(0,1,0)(0,0,0)[0]             : AIC=73389.221, Time=0.06 sec
+ ARIMA(1,1,1)(0,0,0)[0] intercept   : AIC=71880.456, Time=1.88 sec
+ ARIMA(2,1,1)(0,0,0)[0] intercept   : AIC=71874.959, Time=1.73 sec
+ ARIMA(2,1,0)(0,0,0)[0] intercept   : AIC=72781.578, Time=0.26 sec
+ ARIMA(3,1,1)(0,0,0)[0] intercept   : AIC=inf, Time=5.07 sec
+ ARIMA(1,1,2)(0,0,0)[0] intercept   : AIC=inf, Time=2.43 sec
+ ARIMA(3,1,0)(0,0,0)[0] intercept   : AIC=72670.941, Time=0.41 sec
+ ARIMA(3,1,2)(0,0,0)[0] intercept   : AIC=inf, Time=5.84 sec
+ ARIMA(2,1,1)(0,0,0)[0]             : AIC=71872.959, Time=0.87 sec
+ ARIMA(1,1,1)(0,0,0)[0]             : AIC=71878.460, Time=0.60 sec
+ ARIMA(2,1,0)(0,0,0)[0]             : AIC=72779.578, Time=0.14 sec
+ ARIMA(3,1,1)(0,0,0)[0]             : AIC=inf, Time=2.13 sec
+ ARIMA(2,1,2)(0,0,0)[0]             : AIC=inf, Time=0.98 sec
+ ARIMA(1,1,0)(0,0,0)[0]             : AIC=73032.490, Time=0.09 sec
+ ARIMA(1,1,2)(0,0,0)[0]             : AIC=inf, Time=1.00 sec
+ ARIMA(3,1,0)(0,0,0)[0]             : AIC=72668.941, Time=0.18 sec
+ ARIMA(3,1,2)(0,0,0)[0]             : AIC=inf, Time=1.99 sec
+
+Best model:  ARIMA(2,1,1)(0,0,0)[0]          
+Total fit time: 29.520 seconds
+
+Beste Parameter (p, d, q): (2, 1, 1)
+                               SARIMAX Results                                
+==============================================================================
+Dep. Variable:                      y   No. Observations:                 7814
+Model:               SARIMAX(2, 1, 1)   Log Likelihood              -35932.479
+Date:                Mon, 28 Sep 2026   AIC                          71872.959
+Time:                        20:11:50   BIC                          71900.813
+Sample:                             0   HQIC                         71882.504
+                               - 7814                                         
+Covariance Type:                  opg                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+ar.L1          0.6092      0.008     79.884      0.000       0.594       0.624
+ar.L2          0.0332      0.009      3.535      0.000       0.015       0.052
+ma.L1         -0.9894      0.002   -616.093      0.000      -0.993      -0.986
+sigma2       578.2232      5.200    111.192      0.000     568.031     588.415
+===================================================================================
+Ljung-Box (L1) (Q):                   0.01   Jarque-Bera (JB):              7237.56
+Prob(Q):                              0.91   Prob(JB):                         0.00
+Heteroskedasticity (H):               1.00   Skew:                             0.65
+Prob(H) (two-sided):                  0.96   Kurtosis:                         7.53
+===================================================================================
+
+Warnings:
+[1] Covariance matrix calculated using the outer product of gradients (complex-step).
+
+Starte Rolling Window Evaluierung auf dem Test-Set...
+Evaluierung (30 Tage): 100%|██████████| 1925/1925 [06:41<00:00,  4.79it/s]
+--------------------------------------------------
+ARIMA Model (30-Day Rolling Forecast) - Test Set
+--------------------------------------------------
+Anzahl evaluierter 30-Tage-Fenster: 1925
+Durchschnittlicher MSE:  936.6164
+Durchschnittlicher RMSE: 28.0526
+Durchschnittlicher MAE:  21.6857
+Durchschnittlicher MAPE: 4.1512%
+--------------------------------------------------
+--------------------------------------------------
+Evaluirung von Horizon 96-Tage
+--------------------------------------------------
+Gesamte Tage: 9768
+-> Davon Training: 7814 (bis 2021-05-23)
+-> Davon Test:     1954 (ab 2021-05-24)
+
+Trainiere ARIMA Modell (dies kann einen Moment dauern)...
+Performing stepwise search to minimize aic
+ ARIMA(2,1,2)(0,0,0)[0] intercept   : AIC=inf, Time=2.56 sec
+ ARIMA(0,1,0)(0,0,0)[0] intercept   : AIC=73391.221, Time=0.10 sec
+ ARIMA(1,1,0)(0,0,0)[0] intercept   : AIC=73034.490, Time=0.23 sec
+ ARIMA(0,1,1)(0,0,0)[0] intercept   : AIC=72820.210, Time=0.58 sec
+ ARIMA(0,1,0)(0,0,0)[0]             : AIC=73389.221, Time=0.05 sec
+ ARIMA(1,1,1)(0,0,0)[0] intercept   : AIC=71880.456, Time=2.11 sec
+ ARIMA(2,1,1)(0,0,0)[0] intercept   : AIC=71874.959, Time=1.86 sec
+ ARIMA(2,1,0)(0,0,0)[0] intercept   : AIC=72781.578, Time=0.36 sec
+ ARIMA(3,1,1)(0,0,0)[0] intercept   : AIC=inf, Time=5.45 sec
+ ARIMA(1,1,2)(0,0,0)[0] intercept   : AIC=inf, Time=2.39 sec
+ ARIMA(3,1,0)(0,0,0)[0] intercept   : AIC=72670.941, Time=0.37 sec
+ ARIMA(3,1,2)(0,0,0)[0] intercept   : AIC=inf, Time=6.35 sec
+ ARIMA(2,1,1)(0,0,0)[0]             : AIC=71872.959, Time=0.91 sec
+ ARIMA(1,1,1)(0,0,0)[0]             : AIC=71878.460, Time=0.57 sec
+ ARIMA(2,1,0)(0,0,0)[0]             : AIC=72779.578, Time=0.13 sec
+ ARIMA(3,1,1)(0,0,0)[0]             : AIC=inf, Time=2.04 sec
+ ARIMA(2,1,2)(0,0,0)[0]             : AIC=inf, Time=0.99 sec
+ ARIMA(1,1,0)(0,0,0)[0]             : AIC=73032.490, Time=0.09 sec
+ ARIMA(1,1,2)(0,0,0)[0]             : AIC=inf, Time=1.03 sec
+ ARIMA(3,1,0)(0,0,0)[0]             : AIC=72668.941, Time=0.17 sec
+ ARIMA(3,1,2)(0,0,0)[0]             : AIC=inf, Time=2.08 sec
+
+Best model:  ARIMA(2,1,1)(0,0,0)[0]          
+Total fit time: 30.438 seconds
+
+Beste Parameter (p, d, q): (2, 1, 1)
+                               SARIMAX Results                                
+==============================================================================
+Dep. Variable:                      y   No. Observations:                 7814
+Model:               SARIMAX(2, 1, 1)   Log Likelihood              -35932.479
+Date:                Mon, 28 Sep 2026   AIC                          71872.959
+Time:                        20:19:04   BIC                          71900.813
+Sample:                             0   HQIC                         71882.504
+                               - 7814                                         
+Covariance Type:                  opg                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+ar.L1          0.6092      0.008     79.884      0.000       0.594       0.624
+ar.L2          0.0332      0.009      3.535      0.000       0.015       0.052
+ma.L1         -0.9894      0.002   -616.093      0.000      -0.993      -0.986
+sigma2       578.2232      5.200    111.192      0.000     568.031     588.415
+===================================================================================
+Ljung-Box (L1) (Q):                   0.01   Jarque-Bera (JB):              7237.56
+Prob(Q):                              0.91   Prob(JB):                         0.00
+Heteroskedasticity (H):               1.00   Skew:                             0.65
+Prob(H) (two-sided):                  0.96   Kurtosis:                         7.53
+===================================================================================
+
+Warnings:
+[1] Covariance matrix calculated using the outer product of gradients (complex-step).
+
+Starte Rolling Window Evaluierung auf dem Test-Set...
+Evaluierung (96 Tage): 100%|██████████| 1859/1859 [06:54<00:00,  4.49it/s]
+--------------------------------------------------
+ARIMA Model (96-Day Rolling Forecast) - Test Set
+--------------------------------------------------
+Anzahl evaluierter 96-Tage-Fenster: 1859
+Durchschnittlicher MSE:  1000.4324
+Durchschnittlicher RMSE: 30.0681
+Durchschnittlicher MAE:  22.6055
+Durchschnittlicher MAPE: 4.3279%
+--------------------------------------------------
+--------------------------------------------------
+Evaluirung von Horizon 192-Tage
+--------------------------------------------------
+Gesamte Tage: 9768
+-> Davon Training: 7814 (bis 2021-05-23)
+-> Davon Test:     1954 (ab 2021-05-24)
+
+Trainiere ARIMA Modell (dies kann einen Moment dauern)...
+Performing stepwise search to minimize aic
+ ARIMA(2,1,2)(0,0,0)[0] intercept   : AIC=inf, Time=2.74 sec
+ ARIMA(0,1,0)(0,0,0)[0] intercept   : AIC=73391.221, Time=0.10 sec
+ ARIMA(1,1,0)(0,0,0)[0] intercept   : AIC=73034.490, Time=0.21 sec
+ ARIMA(0,1,1)(0,0,0)[0] intercept   : AIC=72820.210, Time=0.69 sec
+ ARIMA(0,1,0)(0,0,0)[0]             : AIC=73389.221, Time=0.05 sec
+ ARIMA(1,1,1)(0,0,0)[0] intercept   : AIC=71880.456, Time=2.01 sec
+ ARIMA(2,1,1)(0,0,0)[0] intercept   : AIC=71874.959, Time=1.74 sec
+ ARIMA(2,1,0)(0,0,0)[0] intercept   : AIC=72781.578, Time=0.26 sec
+ ARIMA(3,1,1)(0,0,0)[0] intercept   : AIC=inf, Time=5.23 sec
+ ARIMA(1,1,2)(0,0,0)[0] intercept   : AIC=inf, Time=2.49 sec
+ ARIMA(3,1,0)(0,0,0)[0] intercept   : AIC=72670.941, Time=0.39 sec
+ ARIMA(3,1,2)(0,0,0)[0] intercept   : AIC=inf, Time=6.01 sec
+ ARIMA(2,1,1)(0,0,0)[0]             : AIC=71872.959, Time=0.96 sec
+ ARIMA(1,1,1)(0,0,0)[0]             : AIC=71878.460, Time=0.61 sec
+ ARIMA(2,1,0)(0,0,0)[0]             : AIC=72779.578, Time=0.13 sec
+ ARIMA(3,1,1)(0,0,0)[0]             : AIC=inf, Time=2.12 sec
+ ARIMA(2,1,2)(0,0,0)[0]             : AIC=inf, Time=1.05 sec
+ ARIMA(1,1,0)(0,0,0)[0]             : AIC=73032.490, Time=0.10 sec
+ ARIMA(1,1,2)(0,0,0)[0]             : AIC=inf, Time=1.06 sec
+ ARIMA(3,1,0)(0,0,0)[0]             : AIC=72668.941, Time=0.18 sec
+ ARIMA(3,1,2)(0,0,0)[0]             : AIC=inf, Time=1.94 sec
+
+Best model:  ARIMA(2,1,1)(0,0,0)[0]          
+Total fit time: 30.085 seconds
+
+Beste Parameter (p, d, q): (2, 1, 1)
+                               SARIMAX Results                                
+==============================================================================
+Dep. Variable:                      y   No. Observations:                 7814
+Model:               SARIMAX(2, 1, 1)   Log Likelihood              -35932.479
+Date:                Mon, 28 Sep 2026   AIC                          71872.959
+Time:                        20:26:32   BIC                          71900.813
+Sample:                             0   HQIC                         71882.504
+                               - 7814                                         
+Covariance Type:                  opg                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+ar.L1          0.6092      0.008     79.884      0.000       0.594       0.624
+ar.L2          0.0332      0.009      3.535      0.000       0.015       0.052
+ma.L1         -0.9894      0.002   -616.093      0.000      -0.993      -0.986
+sigma2       578.2232      5.200    111.192      0.000     568.031     588.415
+===================================================================================
+Ljung-Box (L1) (Q):                   0.01   Jarque-Bera (JB):              7237.56
+Prob(Q):                              0.91   Prob(JB):                         0.00
+Heteroskedasticity (H):               1.00   Skew:                             0.65
+Prob(H) (two-sided):                  0.96   Kurtosis:                         7.53
+===================================================================================
+
+Warnings:
+[1] Covariance matrix calculated using the outer product of gradients (complex-step).
+
+Starte Rolling Window Evaluierung auf dem Test-Set...
+Evaluierung (192 Tage): 100%|██████████| 1763/1763 [06:40<00:00,  4.40it/s]
+--------------------------------------------------
+ARIMA Model (192-Day Rolling Forecast) - Test Set
+--------------------------------------------------
+Anzahl evaluierter 192-Tage-Fenster: 1763
+Durchschnittlicher MSE:  1043.4133
+Durchschnittlicher RMSE: 31.6045
+Durchschnittlicher MAE:  23.2232
+Durchschnittlicher MAPE: 4.4442%
+--------------------------------------------------
+--------------------------------------------------
+Evaluirung von Horizon 365-Tage
+--------------------------------------------------
+Gesamte Tage: 9768
+-> Davon Training: 7814 (bis 2021-05-23)
+-> Davon Test:     1954 (ab 2021-05-24)
+
+Trainiere ARIMA Modell (dies kann einen Moment dauern)...
+Performing stepwise search to minimize aic
+ ARIMA(2,1,2)(0,0,0)[0] intercept   : AIC=inf, Time=2.87 sec
+ ARIMA(0,1,0)(0,0,0)[0] intercept   : AIC=73391.221, Time=0.10 sec
+ ARIMA(1,1,0)(0,0,0)[0] intercept   : AIC=73034.490, Time=0.19 sec
+ ARIMA(0,1,1)(0,0,0)[0] intercept   : AIC=72820.210, Time=0.58 sec
+ ARIMA(0,1,0)(0,0,0)[0]             : AIC=73389.221, Time=0.05 sec
+ ARIMA(1,1,1)(0,0,0)[0] intercept   : AIC=71880.456, Time=1.93 sec
+ ARIMA(2,1,1)(0,0,0)[0] intercept   : AIC=71874.959, Time=1.69 sec
+ ARIMA(2,1,0)(0,0,0)[0] intercept   : AIC=72781.578, Time=0.30 sec
+ ARIMA(3,1,1)(0,0,0)[0] intercept   : AIC=inf, Time=5.47 sec
+ ARIMA(1,1,2)(0,0,0)[0] intercept   : AIC=inf, Time=2.70 sec
+ ARIMA(3,1,0)(0,0,0)[0] intercept   : AIC=72670.941, Time=0.39 sec
+ ARIMA(3,1,2)(0,0,0)[0] intercept   : AIC=inf, Time=6.18 sec
+ ARIMA(2,1,1)(0,0,0)[0]             : AIC=71872.959, Time=0.98 sec
+ ARIMA(1,1,1)(0,0,0)[0]             : AIC=71878.460, Time=0.56 sec
+ ARIMA(2,1,0)(0,0,0)[0]             : AIC=72779.578, Time=0.13 sec
+ ARIMA(3,1,1)(0,0,0)[0]             : AIC=inf, Time=2.17 sec
+ ARIMA(2,1,2)(0,0,0)[0]             : AIC=inf, Time=1.06 sec
+ ARIMA(1,1,0)(0,0,0)[0]             : AIC=73032.490, Time=0.12 sec
+ ARIMA(1,1,2)(0,0,0)[0]             : AIC=inf, Time=1.06 sec
+ ARIMA(3,1,0)(0,0,0)[0]             : AIC=72668.941, Time=0.17 sec
+ ARIMA(3,1,2)(0,0,0)[0]             : AIC=inf, Time=2.24 sec
+
+Best model:  ARIMA(2,1,1)(0,0,0)[0]          
+Total fit time: 30.916 seconds
+
+Beste Parameter (p, d, q): (2, 1, 1)
+                               SARIMAX Results                                
+==============================================================================
+Dep. Variable:                      y   No. Observations:                 7814
+Model:               SARIMAX(2, 1, 1)   Log Likelihood              -35932.479
+Date:                Mon, 28 Sep 2026   AIC                          71872.959
+Time:                        20:33:51   BIC                          71900.813
+Sample:                             0   HQIC                         71882.504
+                               - 7814                                         
+Covariance Type:                  opg                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+ar.L1          0.6092      0.008     79.884      0.000       0.594       0.624
+ar.L2          0.0332      0.009      3.535      0.000       0.015       0.052
+ma.L1         -0.9894      0.002   -616.093      0.000      -0.993      -0.986
+sigma2       578.2232      5.200    111.192      0.000     568.031     588.415
+===================================================================================
+Ljung-Box (L1) (Q):                   0.01   Jarque-Bera (JB):              7237.56
+Prob(Q):                              0.91   Prob(JB):                         0.00
+Heteroskedasticity (H):               1.00   Skew:                             0.65
+Prob(H) (two-sided):                  0.96   Kurtosis:                         7.53
+===================================================================================
+
+Warnings:
+[1] Covariance matrix calculated using the outer product of gradients (complex-step).
+
+Starte Rolling Window Evaluierung auf dem Test-Set...
+Evaluierung (365 Tage): 100%|██████████| 1590/1590 [05:50<00:00,  4.54it/s]
+--------------------------------------------------
+ARIMA Model (365-Day Rolling Forecast) - Test Set
+--------------------------------------------------
+Anzahl evaluierter 365-Tage-Fenster: 1590
+Durchschnittlicher MSE:  997.1701
+Durchschnittlicher RMSE: 31.4706
+Durchschnittlicher MAE:  22.5818
+Durchschnittlicher MAPE: 4.3147%
+--------------------------------------------------
+
+Process finished with exit code 0

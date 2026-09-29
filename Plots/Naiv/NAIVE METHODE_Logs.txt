@@ -1,0 +1,54 @@
+NAIVE METHODE:
+
+Gesamtdaten: 9768 Tage
+Training:    6839 Tage (70%)
+Validierung: 976 Tage (10%)
+Test:        1953 Tage (20%)
+--------------------------------------------------
+Evaluirung von Horizon 30-Tage
+--------------------------------------------------
+--------------------------------------------------
+Naive Model (30-Days Rolling Forecast) - Test Set
+--------------------------------------------------
+Anzahl evaluierter 30-Tage-Fenster: 1924
+Durchschnittlicher MSE:  1627.2897
+Durchschnittlicher RMSE: 35.2727
+Durchschnittlicher MAE:  29.1366
+Durchschnittlicher MAPE: 5.5737%
+--------------------------------------------------
+--------------------------------------------------
+Evaluirung von Horizon 96-Tage
+--------------------------------------------------
+--------------------------------------------------
+Naive Model (96-Days Rolling Forecast) - Test Set
+--------------------------------------------------
+Anzahl evaluierter 30-Tage-Fenster: 1858
+Durchschnittlicher MSE:  1824.6001
+Durchschnittlicher RMSE: 38.2938
+Durchschnittlicher MAE:  31.1319
+Durchschnittlicher MAPE: 5.9692%
+--------------------------------------------------
+--------------------------------------------------
+Evaluirung von Horizon 192-Tage
+--------------------------------------------------
+--------------------------------------------------
+Naive Model (192-Days Rolling Forecast) - Test Set
+--------------------------------------------------
+Anzahl evaluierter 30-Tage-Fenster: 1762
+Durchschnittlicher MSE:  1942.2178
+Durchschnittlicher RMSE: 40.5098
+Durchschnittlicher MAE:  32.6173
+Durchschnittlicher MAPE: 6.2522%
+--------------------------------------------------
+--------------------------------------------------
+Evaluirung von Horizon 365-Tage
+--------------------------------------------------
+--------------------------------------------------
+Naive Model (365-Days Rolling Forecast) - Test Set
+--------------------------------------------------
+Anzahl evaluierter 30-Tage-Fenster: 1589
+Durchschnittlicher MSE:  1825.7007
+Durchschnittlicher RMSE: 39.9927
+Durchschnittlicher MAE:  31.6716
+Durchschnittlicher MAPE: 6.0534%
+--------------------------------------------------
