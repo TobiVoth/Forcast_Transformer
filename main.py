@@ -1,43 +1,39 @@
-"""from Data.pegel_utils import load_data, plot_pegel_data, analyze_pegel_data
+from Data.pegel_utils import load_data, plot_pegel_data, analyze_pegel_data
 import pandas as pd
 
-#Läd Pegeldaten von bestimmtem Zeitpunkt
-pegel_data = load_data('2026-09-01', '2026-09-22')
+
+# ------------------------------------
+# Läd Pegeldaten von bestimmtem Zeitpunkt
+# ------------------------------------
+
+
+pegel_data = load_data('2000-01-01', '2026-09-22')
 
 print(pegel_data.head())
 print(pegel_data.describe())
 
 #Plotet daten ab gewähltem Datum
 #optional kann ein plot_to Datum mitgegeben werden, bis wann die Daten geplottet werden sollen
-plot_from = '2026-09-01'
+plot_from = '2026-01-01'
 plot_pegel_data(pegel_data, plot_from)
 
 
 
+# ------------------------------------
+# Analyse von Daten (Ausgabe: Diagramme und Kennzahlen)
+# ------------------------------------
+
 analyze_pegel_data(pegel_data)
 
-"""
-"""
-import torch
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-print(f"Nutze Device: {device}")
 
-import torch
-
-print("PyTorch Version:", torch.__version__)
-print("CUDA verfügbar?:", torch.cuda.is_available())
-
-if torch.cuda.is_available():
-    print("Grafikkarte:", torch.cuda.get_device_name(0))
-else:
-    print("CUDA Version in PyTorch:", torch.version.cuda)
-"""
+# ------------------------------------
+# Visualisierung Train-, Validation- und Testset
+# ------------------------------------
 
 
-"""
 import matplotlib.pyplot as plt
 from Data.pegel_utils import load_data
-import single_head_attention.hyperparameter as hyperparameter
+import single_head_attention.archiv.hyperparameter as hyperparameter
 use_data_from = hyperparameter.use_data_from
 
 
@@ -52,12 +48,6 @@ val_end = int(total_len * 0.90)
 train_data = pegel_data.iloc[:train_end].copy()
 val_data = pegel_data.iloc[train_end:val_end].copy()
 test_data = pegel_data.iloc[val_end:].copy()
-
-
-
-
-
-
 
 plt.figure(figsize=(14, 6))
 
@@ -77,9 +67,14 @@ plt.tight_layout()
 # Plot anzeigen
 plt.show()
 
+
+
+# ------------------------------------
+# Parameter von Modell anzeigen lassen
+# ------------------------------------
+
+
 """
-
-
 from neuralforecast import NeuralForecast
 
 # 1. Das gespeicherte Modell aus dem Verzeichnis laden
@@ -99,3 +94,5 @@ for attr in attrs:
         print(f"{attr:<15}: {getattr(model, attr)}")
     elif hasattr(model, 'hparams') and attr in model.hparams:
         print(f"{attr:<15}: {model.hparams[attr]}")
+
+"""

@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_absolute_percentage_error
+from sklearn.metrics import mean_squared_error, mean_absolute_error
 from neuralforecast import NeuralForecast
 from neuralforecast.models import PatchTST
 from pytorch_lightning.loggers import CSVLogger
@@ -9,8 +9,9 @@ from Data.pegel_utils import load_data
 import glob
 import os
 from attention_utils import predict_and_plot_attention
-from neuralforecast.losses.pytorch import MSE, HuberLoss, MAE
-from tqdm import tqdm
+from neuralforecast.losses.pytorch import MSE, HuberLoss, MQLoss
+from extrem_spike_loss import RevinAsymmetricPeakLoss
+
 from neuralforecast.auto import AutoPatchTST
 from ray import tune
 
@@ -18,13 +19,20 @@ from ray import tune
 # 1. Daten laden und vorbereiten
 # ---------------------------------------------------------
 pegel_data = load_data('2000-01-01')
-df = pd.DataFrame({
+df_raw = pd.DataFrame({
     'unique_id': ['pegel_1'] * len(pegel_data),
     'ds': pd.to_datetime(pegel_data['time']),
-    'y': pegel_data['value']
+    'y_raw': pegel_data['value']
 })
 
-df = df.sort_values('ds').reset_index(drop=True)
+df = df_raw.sort_values('ds').reset_index(drop=True)
+
+# --- SCHRITT A: DIFFERENZEN BERECHNEN (ΔY = Y_t - Y_{t-1}) ---
+# .diff() erzeugt NaNs im ersten Zeitschritt, daher dropna()
+df = df_raw.copy()
+df['y'] = df['y_raw'].diff()
+df = df.dropna().reset_index(drop=True)
+
 
 # ---------------------------------------------------------
 # 2. Dynamischer 70% / 10% / 20% Split
@@ -45,42 +53,48 @@ train_val_df = df.iloc[:-test_size]
 # Test-Datensatz (Die letzten 20%)
 test_df = df.iloc[-test_size:]
 
+
+train_val_raw_df = df_raw.iloc[:-test_size]
+test_raw_df = df_raw.iloc[-test_size:]
+
 # ---------------------------------------------------------
 # 3. Modell konfigurieren
 # ---------------------------------------------------------
 csv_logger = CSVLogger(save_dir="my_logs", name="patchtst_pegel")
 
+spike_threshold = train_val_df['y'].quantile(0.90)
+print(
+    f'Verwende Spike-Schwellenwert (90%-Quantil): {spike_threshold:.2f} cm'
+)
+
+
 model = PatchTST(
-    # Horizon
     h=30,
-    # Input
     input_size=512,
     patch_len=16,
     stride=8,
-    hidden_size = 64,
-    # Attentionlayer
     encoder_layers=4,
-    n_heads=2,
-    # Feed Forward Netz
-    linear_hidden_size=64,
-    dropout=0.27,
-    # Training
-    max_steps=1000,
-    val_check_steps=20,
-    early_stop_patience_steps=5,
-    learning_rate=0.000015,
+    n_heads=8,
+    hidden_size=64,
+    max_steps=800,
+    val_check_steps=10,
+    early_stop_patience_steps=10,
+    learning_rate=0.0001,
+    dropout=0.3,
     batch_size=32,
     logger=csv_logger,
-    loss=MAE(),
-    valid_loss=MAE()
+    #loss=HuberLoss(),
+    loss=MSE(),
+    valid_loss=MSE(),
+    #revin_affine=True,
+    #revin= False
 
+
+    #valid_loss=HuberLoss(delta=5.0),66
+    #scaler_type='robust'
 )
 
-nf = NeuralForecast(models=[model], freq='D')
-
-
-
-
+nf = NeuralForecast(models=[model], freq='1h')
 
 # ---------------------------------------------------------
 # 4. Training (inkl. Validierung)
@@ -155,78 +169,69 @@ print("Modell erfolgreich gespeichert!")
 
 
 
-
 # ---------------------------------------------------------
-# 5. Prognose auf Testdaten (Rolling Window)
+# 5. Prognose auf Testdaten (Rolling Window & Rekonstruktion)
 # ---------------------------------------------------------
-best_model = nf.models[0]
+print('\nErstelle rollierende Prognose & rekonstruiere echte Pegelstände...')
 
-# Liest die tatsächliche Anzahl der Encoder-Schichten aus dem Backbone
-try:
-    num_layers = len(best_model.model.backbone.encoder.layers)
-except AttributeError:
-    num_layers = getattr(best_model, 'encoder_layers', 1)
-
-print(f"\nVisualisiere Attention Maps für alle {num_layers} Encoder-Schichten...")
-
-forecast_results = []
-for layer_idx in range(num_layers):
-    print(f"--> Rendere Encoder Layer {layer_idx}...")
-
-    # Funktionsaufruf zeigt den Plot für Layer 'layer_idx' mit allen Heads nebeneinander an
-    forecast_df = predict_and_plot_attention(
-        nf_model=nf,
-        df=train_val_df,
-        layer_index=layer_idx
-    )
-    forecast_results.append(forecast_df)
-
-
-# Danach geht Ihr Code ganz normal weiter:
-results_df = pd.merge(test_df[['ds', 'y']], forecast_df[['ds', 'PatchTST']], on='ds')
-results_df.rename(columns={'y': 'Echte_Werte', 'PatchTST': 'Prognose'}, inplace=True)
-print("\nErstelle rollierende Prognose für Test-Zeitraum...")
-
-
-# Der tatsächliche Vorhersagehorizont des Modells (z.B. 7 Tage)
-# Muss mit dem 'h' aus deiner PatchTST-Konfiguration übereinstimmen!
 h = model.h
-
 metrics_list = []
 all_forecasts = []
-step = 1
-# Wir iterieren in Schritten von 'h' durch das Test-Set
-for i in tqdm(range(0, len(test_df), step), desc=f"Evaluierung von Test-Set"):
-    # Abbrechen, wenn nicht mehr genug echte Testdaten für ein ganzes h-Fenster übrig sind
-    if i + h > len(test_df):
-        break
 
-    # Die Historie baut sich stückweise auf:
-    # Ursprüngliche Trainingsdaten + die echten Testdaten bis zum aktuellen Schritt 'i'
-    current_history = pd.concat([train_val_df, test_df.iloc[:i]])
+for i in range(0, len(test_df), h):
+  if i + h > len(test_df):
+    break
 
-    # Die wahren Werte, die wir in diesem Schritt vorhersagen wollen
-    current_true = test_df.iloc[i: i + h]
+  # 1. Historie der DIFFERENZEN aufbauen für die Modell-Prognose
+  current_history_diff = pd.concat([train_val_df, test_df.iloc[:i]])
 
-    # Vorhersage generieren (NeuralForecast nutzt intern die letzten 'input_size' Tage der Historie)
-    current_pred_df = nf.predict(df=current_history)
-    current_pred = current_pred_df.iloc[-h:]  # Nur die neu vorhergesagten 'h' Tage nehmen
+  # 2. Modell sagt die nächsten h Schritt-ÄNDERUNGEN (ΔY_hat) voraus
+  current_pred_diff_df = nf.predict(df=current_history_diff)
+  pred_diffs = current_pred_diff_df['PatchTST'].iloc[-h:].values
 
-    # Metriken für dieses spezifische Fenster berechnen
-    mse = mean_squared_error(current_true['y'], current_pred['PatchTST'])
-    mae = mean_absolute_error(current_true['y'], current_pred['PatchTST'])
-    rmse = np.sqrt(mse)
-    mape = mean_absolute_percentage_error(
-        current_true["y"], current_pred["PatchTST"]
-    )
+  # --- SCHRITT B: REKONSTRUKTION AUF ECHTE PEGELSTÄNDE ---
+  # Ankerpunkt: Der letzte echte Pegelstand (aus df_raw) vor dem Fenster
+  anchor_val = (
+      train_val_raw_df['y_raw'].iloc[-1]
+      if i == 0
+      else test_raw_df['y_raw'].iloc[i - 1]
+  )
 
-    metrics_list.append({"MSE": mse, "RMSE": rmse, "MAE": mae, "MAPE": mape})
-    # Daten für einen späteren Plot speichern
-    all_forecasts.append({
-        'history': current_history.tail(512),  # Genau 10 Tage Historie
-        'true': current_true,
-        'pred': current_pred
-    })
+  # Rekonstruktion: Y_hat = Anker + cumsum(ΔY_hat)
+  reconstructed_pred_values = anchor_val + np.cumsum(pred_diffs)
+
+  # Echte Pegelstände für dieses Fenster
+  current_true_raw = test_raw_df.iloc[i : i + h]
+
+  # Erstelle DataFrame für die rekonstruierte Prognose
+  current_pred_reconstructed = pd.DataFrame({
+      'ds': current_true_raw['ds'].values,
+      'PatchTST': reconstructed_pred_values,
+  })
+
+  # Metriken auf den ECHTEN Pegelständen berechnen (nicht auf Differenzen)
+  mse = mean_squared_error(
+      current_true_raw['y_raw'], current_pred_reconstructed['PatchTST']
+  )
+  mae = mean_absolute_error(
+      current_true_raw['y_raw'], current_pred_reconstructed['PatchTST']
+  )
+  rmse = np.sqrt(mse)
+
+  metrics_list.append({'MSE': mse, 'RMSE': rmse, 'MAE': mae})
+
+  # Rohdaten-Historie für Plot-Zwecke holen
+  raw_history = (
+      pd.concat([train_val_raw_df, test_raw_df.iloc[:i]])
+      .tail(120)
+      .rename(columns={'y_raw': 'y'})
+  )
+
+  all_forecasts.append({
+      'history': raw_history,
+      'true': current_true_raw.rename(columns={'y_raw': 'y'}),
+      'pred': current_pred_reconstructed,
+  })
 
 # ---------------------------------------------------------
 # 6. Evaluierung & Plot (Gemitteltes Ergebnis & Einzelfenster)
@@ -237,8 +242,6 @@ print("\n--- DURCHSCHNITTLICHE TESTDATEN METRIKEN (Rolling Window) ---")
 print(f"Mean MSE:       {metrics_df['MSE'].mean():.4f}")
 print(f"Mean RMSE:      {metrics_df['RMSE'].mean():.4f}")
 print(f"Mean MAE:       {metrics_df['MAE'].mean():.4f}")
-print(f"Mean MAPE:      {metrics_df['MAPE'].mean():.4f}")
-
 print(f"Anzahl Fenster: {len(metrics_df)}")
 print("-------------------------------------------------------------")
 
@@ -273,8 +276,8 @@ plt.grid(True, linestyle=':', alpha=0.6)
 plt.tight_layout()
 plt.show()
 
-for i in range(5):
-    plot_data = all_forecasts[i]
+for i in range(8):
+    plot_data = all_forecasts[55+i]
     hist_df = plot_data['history'].reset_index(drop=True)
     true_df = plot_data['true'].reset_index(drop=True)
     pred_df = plot_data['pred'].reset_index(drop=True)

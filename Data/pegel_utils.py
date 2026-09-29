@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from statsmodels.graphics.tsaplots import plot_acf
+import matplotlib.dates as mdates
 
 
 
@@ -16,21 +17,22 @@ def load_data(date_from, date_to=None):
         date_to = datetime.now()
     current_dir = Path(__file__).parent
 
-    csv_path = current_dir / 'pegel_daten.csv'
+    csv_path = current_dir / 'pegelonline-bhvalterleuchtturm-W-20000101-20260928.csv'
 
     df = pd.read_csv(csv_path, sep=';')
-    df['time'] = pd.to_datetime(df['timestamp'], format='%Y-%m-%d %H:%M')
+    df['time'] = pd.to_datetime(df['timestamp'], format='ISO8601')
     df = df[df['time'] >= date_from].sort_values('time')
 
     df = df[df['time'] <= date_to]
 
-    df_daily = df.set_index('time').resample('2h')['value'].mean().interpolate(method='linear').reset_index()
+    df_daily = df.set_index('time').resample('D')['value'].mean().interpolate(method='linear').reset_index()
 
     return df_daily
 
-def plot_pegel_data(pegel_df, date_from, date_to=None):
-    date_from = datetime.strptime(date_from, "%Y-%m-%d")
 
+def plot_pegel_data(pegel_df, date_from, date_to=None):
+    # Datums-Strings in Datetime-Objekte umwandeln
+    date_from = datetime.strptime(date_from, "%Y-%m-%d")
 
     if date_to is None:
         date_to = datetime.now()
@@ -40,10 +42,16 @@ def plot_pegel_data(pegel_df, date_from, date_to=None):
     if date_from == date_to:
         date_to = date_to + timedelta(days=1)
 
+    # Sicherstellen, dass die 'time' Spalte auch im datetime Format vorliegt
+    pegel_df['time'] = pd.to_datetime(pegel_df['time'])
+
+    # Filtern
     pegel_df = pegel_df[pegel_df['time'] >= date_from].sort_values('time')
     pegel_df = pegel_df[pegel_df['time'] <= date_to]
 
-
+    # ==========================================
+    # Plot 1: Gesamter Zeitraum (Dein originaler Plot)
+    # ==========================================
     fig, ax1 = plt.subplots(figsize=(12, 6))
     color = 'tab:blue'
     ax1.set_xlabel('Zeit (time)')
@@ -51,9 +59,41 @@ def plot_pegel_data(pegel_df, date_from, date_to=None):
     ax1.plot(pegel_df['time'], pegel_df['value'], color=color, label='Pegelstand')
     ax1.tick_params(axis='y', labelcolor=color)
 
-    plt.title('Pegelstand im Zeitraum')
+    ax1.set_title('Pegelstand im Gesamtzielraum')
     fig.tight_layout()
-    plt.grid(True, linestyle="--", alpha=0.5)
+    ax1.grid(True, linestyle="--", alpha=0.5)
+
+    # ==========================================
+    # Plot 2: Jahresvergleich (Monate auf x-Achse)
+    # ==========================================
+    fig2, ax2 = plt.subplots(figsize=(12, 6))
+
+    # Extrahiere das Jahr für die Legende und Gruppierung
+    pegel_df['year'] = pegel_df['time'].dt.year
+
+    # "Dummy-Datum" erstellen (wir nehmen 2004, da es ein Schaltjahr ist und den 29. Feb abdeckt)
+    # Dadurch landen alle Jahre auf derselben Zeitachse.
+    pegel_df['dummy_date'] = pegel_df['time'].apply(lambda dt: dt.replace(year=2004))
+
+    # Für jedes gefundene Jahr eine eigene Linie zeichnen
+    for year, group in pegel_df.groupby('year'):
+        ax2.plot(group['dummy_date'], group['value'], label=str(year), alpha=0.7)
+
+    ax2.set_xlabel('Monat')
+    ax2.set_ylabel('Pegelstand (value)')
+    ax2.set_title('Jahresvergleich: Pegelstände übereinandergelegt')
+
+    # x-Achse formatieren, sodass nur die Monate (Jan, Feb, etc.) angezeigt werden
+    ax2.xaxis.set_major_locator(mdates.MonthLocator())
+    ax2.xaxis.set_major_formatter(mdates.DateFormatter('%b'))
+
+    # Legende außerhalb des Graphen platzieren, damit sie keine Graphen verdeckt
+    ax2.legend(title='Jahr', bbox_to_anchor=(1.05, 1), loc='upper left')
+
+    ax2.grid(True, linestyle="--", alpha=0.5)
+    fig2.tight_layout()
+
+    # Beide Plots anzeigen
     plt.show()
 
 

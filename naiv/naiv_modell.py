@@ -1,99 +1,165 @@
-from Data.pegel_utils import load_data
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from sklearn.metrics import root_mean_squared_error, mean_absolute_error, mean_squared_error
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_absolute_percentage_error
+from Data.pegel_utils import load_data
 
-
-# ---------------------------------------------------------
-# 1. Daten laden und vorbereiten
-# ---------------------------------------------------------
 pegel_data = load_data('2000-01-01')
-df = pd.DataFrame({
-    'unique_id': ['pegel_1'] * len(pegel_data),
-    'ds': pd.to_datetime(pegel_data['time']),
-    'y': pegel_data['value']
-})
-
-df = df.sort_values('ds').reset_index(drop=True)
-
 # ---------------------------------------------------------
-# 2. Dynamischer 70% / 10% / 20% Split
+# 1. Daten laden & vorbereiten (Dein Code)
 # ---------------------------------------------------------
-total_len = len(df)
-test_size = int(0.20 * total_len)  # 20% für den finalen Test
-val_size  = int(0.10 * total_len)  # 10% für die Validierung während des Trainings
-train_size = total_len - test_size - val_size # Die restlichen 70%
 
-print(f"Gesamtdaten: {total_len} Tage")
-print(f"Training:    {train_size} Tage (70%)")
-print(f"Validierung: {val_size} Tage (10%)")
-print(f"Test:        {test_size} Tage (20%)")
 
-# Train/Val-Datensatz (80% der Daten: Training + Validierung)
-train_val_df = df.iloc[:-test_size]
+def execute_naive(pegel_data, horizon=[30, 40] ):
+    df = pd.DataFrame({
+        'unique_id': ['pegel_1'] * len(pegel_data),
+        'ds': pd.to_datetime(pegel_data['time']),
+        'y': pegel_data['value']
+    })
 
-# Test-Datensatz (Die letzten 20%)
-test_df = df.iloc[-test_size:]
+    df = df.sort_values('ds').reset_index(drop=True)
 
-# ---------------------------------------------------------
-# 1. 30-Tage-Testfenster auswählen
-# ---------------------------------------------------------
-horizon = 120
-test_30_df = test_df.iloc[:horizon].copy()
+    # ---------------------------------------------------------
+    # 2. Dynamischer 70% / 10% / 20% Split (Dein Code)
+    # ---------------------------------------------------------
+    total_len = len(df)
+    test_size = int(0.20 * total_len)  # 20% für den finalen Test
+    val_size  = int(0.10 * total_len)  # 10% für die Validierung während des Trainings
+    train_size = total_len - test_size - val_size # Die restlichen 70%
 
-# ---------------------------------------------------------
-# 2. Naive Vorhersage erstellen
-# Letzter bekannter Wert aus train_val_df wird für 30 Tage fortgeschrieben
-# ---------------------------------------------------------
-last_known_value = train_val_df['y'].iloc[-1]
-test_30_df['y_hat_naive'] = last_known_value
+    print(f"Gesamtdaten: {total_len} Tage")
+    print(f"Training:    {train_size} Tage (70%)")
+    print(f"Validierung: {val_size} Tage (10%)")
+    print(f"Test:        {test_size} Tage (20%)")
 
-# ---------------------------------------------------------
-# 3. RMSE berechnen
-# ---------------------------------------------------------
-rmse = root_mean_squared_error(test_30_df['y'], test_30_df['y_hat_naive'])
-mae = mean_absolute_error(test_30_df['y'], test_30_df['y_hat_naive'])
-mse = mean_squared_error(test_30_df['y'], test_30_df['y_hat_naive'])
+    train_val_df = df.iloc[:-test_size].copy()
+    test_df = df.iloc[-test_size:].copy()
 
-print(f"MAE (Naive 30-Tage-Prognose): {mae:.4f}")
-print(f"MSE (Naive 30-Tage-Prognose): {mse:.4f}")
-print(f"RMSE (Naive 30-Tage-Prognose): {rmse:.4f}")
+    # ---------------------------------------------------------
+    # 3. Rolling 30-Day Window Evaluation (Naive Model)
+    # ---------------------------------------------------------
+    for i in horizon:
 
-# ---------------------------------------------------------
-# 4. Visualisierung
-# ---------------------------------------------------------
-plt.figure(figsize=(12, 5))
+        print('-'* 50)
+        print(f'Evaluirung von Horizon {i}-Tage')
+        print('-'* 50)
 
-# Kontext: Die letzten 60 Tage vor dem Split anzeigen
-plt.plot(
-    train_val_df['ds'].iloc[-60:],
-    train_val_df['y'].iloc[-60:],
-    label='Historie (Train/Val)',
-    color='blue',
-)
+        HORIZON = i
+        mse_list = []
+        mae_list = []
+        rmse_list = []
+        mape_list = []
 
-# Tatsächliche Werte der ersten 30 Test-Tage
-plt.plot(
-    test_30_df['ds'],
-    test_30_df['y'],
-    label='Tatsächliche Werte (Test)',
-    color='black',
-    linewidth=2,
-)
 
-# Naive Prognose
-plt.plot(
-    test_30_df['ds'],
-    test_30_df['y_hat_naive'],
-    label='Naive Prognose (30 Tage)',
-    color='red',
-    linestyle='--',
-)
+        # Listen, um alle Predictions und Actuals für den finalen Scatter-Plot zu sammeln
+        all_actuals = []
+        all_preds = []
 
-plt.title(f'30-Tage Naive Prognose vs. Reale Daten (RMSE: {rmse:.2f})')
-plt.xlabel('Datum')
-plt.ylabel('Pegelstand')
-plt.legend()
-plt.grid(True, linestyle=':', alpha=0.6)
-plt.show()
+        first_window_actuals = None
+        first_window_preds = None
+        first_window_dates = None
+
+        # Wir iterieren in 1-Tages-Schritten, solange noch 30 Tage in die Zukunft existieren
+        num_windows = len(test_df) - HORIZON + 1
+
+        for i in range(num_windows):
+            actual_30_days = test_df['y'].iloc[i: i + HORIZON].values
+            dates_30_days = test_df['ds'].iloc[i: i + HORIZON].values
+
+            if i == 0:
+                last_known_value = train_val_df['y'].iloc[-1]
+            else:
+                last_known_value = test_df['y'].iloc[i - 1]
+
+            pred_30_days = np.full(HORIZON, last_known_value)
+
+            window_mse = mean_squared_error(actual_30_days, pred_30_days)
+            window_rmse = np.sqrt(window_mse)
+            window_mae = mean_absolute_error(actual_30_days, pred_30_days)
+            window_mape = mean_absolute_percentage_error(actual_30_days, pred_30_days)
+
+            mse_list.append(window_mse)
+            rmse_list.append(window_rmse)
+            mae_list.append(window_mae)
+            mape_list.append(window_mape)
+
+            all_actuals.extend(actual_30_days)
+            all_preds.extend(pred_30_days)
+
+            if i == 0:
+                first_window_actuals = actual_30_days
+                first_window_preds = pred_30_days
+                first_window_dates = dates_30_days
+
+        # ---------------------------------------------------------
+        # 4. Durchschnittliche Metriken berechnen
+        # ---------------------------------------------------------
+        avg_mse = np.mean(mse_list)
+        avg_rmse = np.mean(rmse_list)
+        avg_mae = np.mean(mae_list)
+        avg_mape = np.mean(mape_list)
+
+        print("-" * 50)
+        print(f"Naive Model ({HORIZON}-Days Rolling Forecast) - Test Set")
+        print("-" * 50)
+        print(f"Anzahl evaluierter 30-Tage-Fenster: {num_windows}")
+        print(f"Durchschnittlicher MSE:  {avg_mse:.4f}")
+        print(f"Durchschnittlicher RMSE: {avg_rmse:.4f}")
+        print(f"Durchschnittlicher MAE:  {avg_mae:.4f}")
+        print(f"Durchschnittlicher MAPE: {avg_mape:.4%}") # Ausgabe in Prozent
+        print("-" * 50)
+
+        # ---------------------------------------------------------
+        # 5. Visualisierung
+        # ---------------------------------------------------------
+
+        # --- Plot A: Das erste Prognosefenster mit Historie ---
+        history_days = 14
+        # Hole die letzten 14 Tage aus dem train_val_df
+        history_dates = train_val_df['ds'].iloc[-history_days:].values
+        history_actuals = train_val_df['y'].iloc[-history_days:].values
+
+        # Verbinde Historie und die echten Werte der Prognose für eine durchgehende Linie
+        combined_dates = np.concatenate([history_dates, first_window_dates])
+        combined_actuals = np.concatenate([history_actuals, first_window_actuals])
+
+        plt.figure(figsize=(10, 5), dpi=100)
+        # Linie für alle echten Werte (Vergangenheit + Zukunft)
+        plt.plot(combined_dates, combined_actuals, marker='o', label='Echte Werte (Observed)', color='#1f77b4')
+
+        # Linie für die Naive Prognose (nur in den 30 Tagen der Zukunft)
+        plt.plot(first_window_dates, first_window_preds, linestyle='--', color='red', linewidth=2,
+                 label=f'Naive Prognose ({HORIZON} Tage konstant)')
+
+        # Eine vertikale Linie, um das "Jetzt" (Start der Prognose) zu markieren
+        start_of_prediction = history_dates[-1]
+        plt.axvline(x=start_of_prediction, color='gray', linestyle=':', linewidth=2, label='Start der Prognose')
+
+        plt.title(f'Erstes {HORIZON}-Tage Prognosefenster', fontsize=12, fontweight='bold')
+        plt.xlabel('Datum', fontweight='bold', fontsize=10)
+        plt.ylabel('Pegelstand', fontweight='bold', fontsize=10)
+        plt.xticks(rotation=45)
+        plt.legend()
+        plt.grid(True, linestyle=':', alpha=0.6)
+        plt.tight_layout()
+        plt.show()
+
+        # --- Plot B: Scatter-Plot (Alle Fenster aggregiert) ---
+        plt.figure(figsize=(6, 5), dpi=100)
+        plt.scatter(all_actuals, all_preds, alpha=0.05, color='#1f77b4', edgecolors='none', s=30)
+
+        min_val = min(min(all_actuals), min(all_preds))
+        max_val = max(max(all_actuals), max(all_preds))
+        plt.plot([min_val, max_val], [min_val, max_val], color='red', linestyle='--', linewidth=2, label='1:1 Linie')
+
+        plt.xlabel('Observed', fontweight='bold', fontsize=12)
+        plt.ylabel('Naive Prediction', fontweight='bold', fontsize=12)
+        plt.title(f'Observed vs. Predicted (Alle {HORIZON}-Tage Fenster)', fontsize=12, fontweight='bold')
+        plt.grid(True, linestyle=':', alpha=0.6)
+        plt.legend()
+        plt.tight_layout()
+        plt.show()
+
+
+
+execute_naive(pegel_data, horizon=[30,96,192,365])
