@@ -52,27 +52,27 @@ csv_logger = CSVLogger(save_dir="my_logs", name="patchtst_pegel")
 
 model = PatchTST(
     # Horizon
-    h=30,
+    h=365,
     # Input
     input_size=512,
     patch_len=16,
     stride=8,
-    hidden_size = 64,
+    hidden_size = 32,
     # Attentionlayer
-    encoder_layers=4,
+    encoder_layers=3,
     n_heads=2,
     # Feed Forward Netz
-    linear_hidden_size=64,
-    dropout=0.27,
+    linear_hidden_size=256,
+    dropout=0.25,
     # Training
     max_steps=1000,
     val_check_steps=20,
     early_stop_patience_steps=5,
-    learning_rate=0.000015,
+    learning_rate=0.00005,
     batch_size=32,
     logger=csv_logger,
-    loss=MAE(),
-    valid_loss=MAE()
+    loss=MSE(),
+    valid_loss=MSE()
 
 )
 
@@ -282,7 +282,7 @@ for i in range(5):
     plt.figure(figsize=(14, 6))
 
     # 1. Daten plotten (Spaltenname 'PatchTST' korrekt verwenden!)
-    plt.plot(hist_df['ds'], hist_df['y'], label=f'Historie (120 Tage)', color='gray', marker='o', alpha=0.7)
+    plt.plot(hist_df['ds'], hist_df['y'], label=f'Historie', color='gray', marker='o', alpha=0.7)
     plt.plot(true_df['ds'], true_df['y'], label='Echte Werte', color='blue', marker='o')
     plt.plot(pred_df['ds'], pred_df['PatchTST'], label='Prognose (PatchTST)',
              color='red', linestyle='--', marker='x')
