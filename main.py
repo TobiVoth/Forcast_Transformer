@@ -33,7 +33,7 @@ analyze_pegel_data(pegel_data)
 
 import matplotlib.pyplot as plt
 from Data.pegel_utils import load_data
-import single_head_attention.archiv.hyperparameter as hyperparameter
+import transformer.archiv.hyperparameter as hyperparameter
 use_data_from = hyperparameter.use_data_from
 
 
@@ -42,8 +42,8 @@ pegel_data = load_data(use_data_from)
 
 
 total_len = len(pegel_data)
-train_end = int(total_len * 0.80)
-val_end = int(total_len * 0.90)
+train_end = int(total_len * 0.70)
+val_end = int(total_len * 0.80)
 
 train_data = pegel_data.iloc[:train_end].copy()
 val_data = pegel_data.iloc[train_end:val_end].copy()

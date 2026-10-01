@@ -19,13 +19,13 @@ def execute_naive(pegel_data, horizon=[30, 40] ):
 
     df = df.sort_values('ds').reset_index(drop=True)
 
-    # ---------------------------------------------------------
-    # 2. Dynamischer 70% / 10% / 20% Split (Dein Code)
-    # ---------------------------------------------------------
+# ---------------------------------------------------------
+# 2. Hyperparameter & Data Split
+# ---------------------------------------------------------
     total_len = len(df)
-    test_size = int(0.20 * total_len)  # 20% für den finalen Test
-    val_size  = int(0.10 * total_len)  # 10% für die Validierung während des Trainings
-    train_size = total_len - test_size - val_size # Die restlichen 70%
+    test_size = int(0.20 * total_len)
+    val_size  = int(0.10 * total_len)
+    train_size = total_len - test_size - val_size
 
     print(f"Gesamtdaten: {total_len} Tage")
     print(f"Training:    {train_size} Tage (70%)")
@@ -35,9 +35,9 @@ def execute_naive(pegel_data, horizon=[30, 40] ):
     train_val_df = df.iloc[:-test_size].copy()
     test_df = df.iloc[-test_size:].copy()
 
-    # ---------------------------------------------------------
-    # 3. Rolling 30-Day Window Evaluation (Naive Model)
-    # ---------------------------------------------------------
+# ---------------------------------------------------------
+# 3. Rolling 30-Day Window Evaluation (Naive Model)
+# ---------------------------------------------------------
     for i in horizon:
 
         print('-'* 50)
@@ -51,7 +51,7 @@ def execute_naive(pegel_data, horizon=[30, 40] ):
         mape_list = []
 
 
-        # Listen, um alle Predictions und Actuals für den finalen Scatter-Plot zu sammeln
+
         all_actuals = []
         all_preds = []
 
@@ -59,7 +59,7 @@ def execute_naive(pegel_data, horizon=[30, 40] ):
         first_window_preds = None
         first_window_dates = None
 
-        # Wir iterieren in 1-Tages-Schritten, solange noch 30 Tage in die Zukunft existieren
+
         num_windows = len(test_df) - HORIZON + 1
 
         for i in range(num_windows):
@@ -91,9 +91,9 @@ def execute_naive(pegel_data, horizon=[30, 40] ):
                 first_window_preds = pred_30_days
                 first_window_dates = dates_30_days
 
-        # ---------------------------------------------------------
-        # 4. Durchschnittliche Metriken berechnen
-        # ---------------------------------------------------------
+# ---------------------------------------------------------
+# 4. Durchschnittliche Metriken berechnen
+# ---------------------------------------------------------
         avg_mse = np.mean(mse_list)
         avg_rmse = np.mean(rmse_list)
         avg_mae = np.mean(mae_list)
@@ -102,16 +102,16 @@ def execute_naive(pegel_data, horizon=[30, 40] ):
         print("-" * 50)
         print(f"Naive Model ({HORIZON}-Days Rolling Forecast) - Test Set")
         print("-" * 50)
-        print(f"Anzahl evaluierter 30-Tage-Fenster: {num_windows}")
+        print(f"Anzahl evaluierter Fenster: {num_windows}")
         print(f"Durchschnittlicher MSE:  {avg_mse:.4f}")
         print(f"Durchschnittlicher RMSE: {avg_rmse:.4f}")
         print(f"Durchschnittlicher MAE:  {avg_mae:.4f}")
         print(f"Durchschnittlicher MAPE: {avg_mape:.4%}") # Ausgabe in Prozent
         print("-" * 50)
 
-        # ---------------------------------------------------------
-        # 5. Visualisierung
-        # ---------------------------------------------------------
+# ---------------------------------------------------------
+# 5. Visualisierung
+# ---------------------------------------------------------
 
         # --- Plot A: Das erste Prognosefenster mit Historie ---
         history_days = 14

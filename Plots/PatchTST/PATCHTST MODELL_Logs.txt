@@ -450,10 +450,12 @@ Universalmodell mit Mittelwerten aus den Finetuning Ergebnissen
 # 30 Tage
 # ---------------------------------------
 
-Mean MSE:       924.3660
-Mean RMSE:      27.8331
-Mean MAE:       21.5540
-Mean MAPE:      0.0412
+
+--- DURCHSCHNITTLICHE TESTDATEN METRIKEN (Rolling Window) ---
+Mean MSE:       918.0104
+Mean RMSE:      27.7457
+Mean MAE:       21.4539
+Mean MAPE:      0.0410
 Anzahl Fenster: 1924
 -------------------------------------------------------------
 
@@ -461,33 +463,21 @@ Process finished with exit code 0
 
 
 
-# ---------------------------------------
-# 60 Tage
-# ---------------------------------------
 
+# ---------------------------------------
+# 96 Tage
+# ---------------------------------------
 --- DURCHSCHNITTLICHE TESTDATEN METRIKEN (Rolling Window) ---
-Mean MSE:       952.1675
-Mean RMSE:      28.8091
-Mean MAE:       21.8389
-Mean MAPE:      0.0418
-Anzahl Fenster: 1894
+Mean MSE:       964.7577
+Mean RMSE:      29.4195
+Mean MAE:       21.9791
+Mean MAPE:      0.0420
+Anzahl Fenster: 1858
 -------------------------------------------------------------
 
 Process finished with exit code 0
 
 
-# ---------------------------------------
-# 96 Tage
-# ---------------------------------------
-
-
---- DURCHSCHNITTLICHE TESTDATEN METRIKEN (Rolling Window) ---
-Mean MSE:       969.4405
-Mean RMSE:      29.4892
-Mean MAE:       22.0640
-Mean MAPE:      0.0422
-Anzahl Fenster: 1858
--------------------------------------------------------------
 
 Process finished with exit code 0
 
@@ -496,28 +486,23 @@ Process finished with exit code 0
 # ---------------------------------------
 
 --- DURCHSCHNITTLICHE TESTDATEN METRIKEN (Rolling Window) ---
-Mean MSE:       1007.0687
-Mean RMSE:      30.9483
-Mean MAE:       22.4986
-Mean MAPE:      0.0430
+Mean MSE:       1001.9916
+Mean RMSE:      30.8739
+Mean MAE:       22.4327
+Mean MAPE:      0.0429
 Anzahl Fenster: 1762
 -------------------------------------------------------------
-
-Process finished with exit code 0
-
 
 # ---------------------------------------
 # 365 Tage
 # ---------------------------------------
-
 --- DURCHSCHNITTLICHE TESTDATEN METRIKEN (Rolling Window) ---
-Mean MSE:       972.3177
-Mean RMSE:      31.0512
-Mean MAE:       22.0714
+Mean MSE:       969.5801
+Mean RMSE:      31.0113
+Mean MAE:       22.0460
 Mean MAPE:      0.0422
 Anzahl Fenster: 1589
 -------------------------------------------------------------
 
-Process finished with exit code 0
 
 

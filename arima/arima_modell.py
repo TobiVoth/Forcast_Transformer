@@ -1,4 +1,3 @@
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import pmdarima as pm
@@ -7,7 +6,6 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_absolu
 from Data.pegel_utils import load_data
 from tqdm import tqdm
 
-# from Data.pegel_utils import load_data, evaluate_and_plot_forecast
 
 # ---------------------------------------------------------
 # 1. Daten laden & vorbereiten
@@ -19,16 +17,16 @@ for i in horizon:
     print('-' * 50)
     print(f'Evaluirung von Horizon {i}-Tage')
     print('-' * 50)
-    # ---------------------------------------------------------
-    # 2. Hyperparameter & Data Split
-    # ---------------------------------------------------------
+# ---------------------------------------------------------
+# 2. Hyperparameter & Data Split
+# ---------------------------------------------------------
     train_size_percent = 0.8
     forecast_days = i
 
-    train_auto = True
+    train_auto = False
     p = 2
     d = 1
-    q = 2
+    q = 1
 
     split_idx = int(len(pegel_data) * train_size_percent)
     train_data = pegel_data.iloc[:split_idx].copy()
@@ -38,9 +36,9 @@ for i in horizon:
     print(f"-> Davon Training: {len(train_data)} (bis {train_data['time'].iloc[-1].date()})")
     print(f"-> Davon Test:     {len(test_data)} (ab {test_data['time'].iloc[0].date()})")
 
-    # ---------------------------------------------------------
-    # 3. ARIMA Modell trainieren
-    # ---------------------------------------------------------
+# ---------------------------------------------------------
+# 3. ARIMA Modell trainieren
+# ---------------------------------------------------------
     print("\nTrainiere ARIMA Modell (dies kann einen Moment dauern)...")
     train_data_short = train_data#.tail(2000)
 
@@ -62,9 +60,9 @@ for i in horizon:
         model.fit(train_data_short['value'])
         print(model.summary())
 
-    # ---------------------------------------------------------
-    # 4. Rolling 30-Day Window Evaluation auf dem Test-Set
-    # ---------------------------------------------------------
+# ---------------------------------------------------------
+# 4. Rolling Window Evaluation auf dem Test-Set
+# ---------------------------------------------------------
     print("\nStarte Rolling Window Evaluierung auf dem Test-Set...")
 
     HORIZON = forecast_days
@@ -82,7 +80,6 @@ for i in horizon:
         actual_30_days = test_data['value'].iloc[i: i + HORIZON].values
         dates_30_days = test_data['time'].iloc[i: i + HORIZON].values
 
-        # 30 Tage in die Zukunft vorhersagen basierend auf dem aktuellen Modellstatus
         pred_30_days = model.predict(n_periods=HORIZON)
 
         # Metriken berechnen
@@ -105,15 +102,13 @@ for i in horizon:
             first_window_preds = pred_30_days
             first_window_dates = dates_30_days
 
-        # MODELL UPDATE:
-        # Den echten Wert von Tag 'i' dem Modell übergeben, damit das
-        # nächste Fenster (i+1 bis i+30) diesen Datenpunkt als Historie nutzen kann.
+
         new_observation = test_data['value'].iloc[i: i + 1]
         model.update(new_observation)
 
-    # ---------------------------------------------------------
-    # 5. Durchschnittliche Metriken berechnen und ausgeben
-    # ---------------------------------------------------------
+# ---------------------------------------------------------
+# 5. Durchschnittliche Metriken berechnen und ausgeben
+# ---------------------------------------------------------
     avg_mse = np.mean(mse_list)
     avg_rmse = np.mean(rmse_list)
     avg_mae = np.mean(mae_list)
@@ -129,9 +124,9 @@ for i in horizon:
     print(f"Durchschnittlicher MAPE: {avg_mape:.4%}")
     print("-" * 50)
 
-    # ---------------------------------------------------------
-    # 6. Visualisierung
-    # ---------------------------------------------------------
+# ---------------------------------------------------------
+# 6. Visualisierung
+# ---------------------------------------------------------
 
     # --- Plot A: Das erste Prognosefenster mit Historie ---
     history_days = 30

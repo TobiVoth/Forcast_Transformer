@@ -30,16 +30,16 @@ Durchschnittlicher MAE:  30.6734
 Durchschnittlicher MAPE: 5.8566%
 --------------------------------------------------
 --------------------------------------------------
-Evaluierung von Horizon 196-Tage
+Evaluierung von Horizon 192-Tage
 --------------------------------------------------
 --------------------------------------------------
-Seasonal Naive Model (196-Days Rolling Forecast) - Test Set
+Seasonal Naive Model (192-Days Rolling Forecast) - Test Set
 --------------------------------------------------
-Anzahl evaluierter Fenster: 1758
-Durchschnittlicher MSE:  1784.5183
-Durchschnittlicher RMSE: 41.4586
-Durchschnittlicher MAE:  31.1657
-Durchschnittlicher MAPE: 5.9511%
+Anzahl evaluierter Fenster: 1762
+Durchschnittlicher MSE:  1782.7629
+Durchschnittlicher RMSE: 41.3974
+Durchschnittlicher MAE:  31.1512
+Durchschnittlicher MAPE: 5.9482%
 --------------------------------------------------
 --------------------------------------------------
 Evaluierung von Horizon 365-Tage

@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from statsmodels.graphics.tsaplots import plot_acf
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 import matplotlib.dates as mdates
 
 
@@ -17,7 +17,7 @@ def load_data(date_from, date_to=None):
         date_to = datetime.now()
     current_dir = Path(__file__).parent
 
-    csv_path = current_dir / 'pegelonline-bhvalterleuchtturm-W-20000101-20260928.csv'
+    csv_path = current_dir / 'pegelonline-bhvalterleuchtturm.csv'
 
     df = pd.read_csv(csv_path, sep=';')
     df['time'] = pd.to_datetime(df['timestamp'], format='ISO8601')
@@ -49,9 +49,9 @@ def plot_pegel_data(pegel_df, date_from, date_to=None):
     pegel_df = pegel_df[pegel_df['time'] >= date_from].sort_values('time')
     pegel_df = pegel_df[pegel_df['time'] <= date_to]
 
-    # ==========================================
+    # ------------------------------------------
     # Plot 1: Gesamter Zeitraum (Dein originaler Plot)
-    # ==========================================
+    # ------------------------------------------
     fig, ax1 = plt.subplots(figsize=(12, 6))
     color = 'tab:blue'
     ax1.set_xlabel('Zeit (time)')
@@ -63,9 +63,9 @@ def plot_pegel_data(pegel_df, date_from, date_to=None):
     fig.tight_layout()
     ax1.grid(True, linestyle="--", alpha=0.5)
 
-    # ==========================================
+    # ------------------------------------------
     # Plot 2: Jahresvergleich (Monate auf x-Achse)
-    # ==========================================
+    # ------------------------------------------
     fig2, ax2 = plt.subplots(figsize=(12, 6))
 
     # Extrahiere das Jahr für die Legende und Gruppierung
@@ -239,41 +239,70 @@ def analyze_pegel_data(df):
     # 3. Visuelle Analyse (Plots)
     # ==========================================
     sns.set_theme(style="whitegrid")
-    fig = plt.figure(figsize=(15, 12))
+    fig = plt.figure(figsize=(15, 15))
 
-    # Plot 1: Zeitverlauf mit gleitendem Durchschnitt (z.B. 30 Tage)
-    ax1 = plt.subplot(2, 2, 1)
-    ax1.plot(series.index, series.values, label='Tageswert', color='lightblue', alpha=0.7)
-    ax1.plot(series.index, series.rolling(window=30, center=True).mean(),
-             label='30-Tage Durchschnitt', color='darkblue', linewidth=2)
-    ax1.set_title('Pegelverlauf über die Zeit')
-    ax1.set_ylabel('Pegelstand')
+    # Plot 1: Zeitverlauf mit gleitendem Durchschnitt
+    ax1 = plt.subplot(3, 2, 1)
+    ax1.plot(
+        series.index,
+        series.values,
+        label="Tageswert",
+        color="lightblue",
+        alpha=0.7,
+    )
+    ax1.plot(
+        series.index,
+        series.rolling(window=30, center=True).mean(),
+        label="30-Tage Durchschnitt",
+        color="darkblue",
+        linewidth=2,
+    )
+    ax1.set_title("Pegelverlauf über die Zeit")
+    ax1.set_ylabel("Pegelstand")
     ax1.legend()
 
     # Plot 2: Verteilung (Histogramm + Dichteschätzung)
-    ax2 = plt.subplot(2, 2, 2)
-    sns.histplot(series, bins=50, kde=True, ax=ax2, color='teal')
-    ax2.axvline(series.mean(), color='red', linestyle='--', label=f'Mean: {series.mean():.1f}')
-    ax2.axvline(series.median(), color='green', linestyle='-', label=f'Median: {series.median():.1f}')
-    ax2.set_title('Verteilung der Pegelstände')
-    ax2.set_xlabel('Pegelstand')
+    ax2 = plt.subplot(3, 2, 2)
+    sns.histplot(series, bins=50, kde=True, ax=ax2, color="teal")
+    ax2.axvline(
+        series.mean(),
+        color="red",
+        linestyle="--",
+        label=f"Mean: {series.mean():.1f}",
+    )
+    ax2.axvline(
+        series.median(),
+        color="green",
+        linestyle="-",
+        label=f"Median: {series.median():.1f}",
+    )
+    ax2.set_title("Verteilung der Pegelstände")
+    ax2.set_xlabel("Pegelstand")
     ax2.legend()
 
     # Plot 3: Saisonalität (Boxplot pro Monat)
-    ax3 = plt.subplot(2, 2, 3)
-    df_monthly = pd.DataFrame({'value': series, 'month': series.index.month})
-    sns.boxplot(x='month', y='value', data=df_monthly, ax=ax3, palette='Blues')
-    ax3.set_title('Saisonalität: Pegelstände nach Monat')
-    ax3.set_xlabel('Monat (1 = Jan, 12 = Dez)')
-    ax3.set_ylabel('Pegelstand')
+    ax3 = plt.subplot(3, 2, 3)
+    df_monthly = pd.DataFrame({"value": series, "month": series.index.month})
+    sns.boxplot(x="month", y="value", data=df_monthly, ax=ax3, palette="Blues")
+    ax3.set_title("Saisonalität: Pegelstände nach Monat")
+    ax3.set_xlabel("Monat (1 = Jan, 12 = Dez)")
+    ax3.set_ylabel("Pegelstand")
 
-    # Plot 4: Autokorrelation (Gedächtnis des Flusses)
-    ax4 = plt.subplot(2, 2, 4)
-    # Zeigt bis zu 30 Tage in die Vergangenheit (lags=30)
-    plot_acf(series, lags=30, ax=ax4, color='navy', alpha=0.05)
-    ax4.set_title('Autokorrelation (ACF) - Trägheit des Systems')
-    ax4.set_xlabel('Verzögerung in Tagen (Lag)')
-    ax4.set_ylabel('Korrelation')
+    # Plot 4: Autokorrelation (ACF)
+    ax4 = plt.subplot(3, 2, 4)
+    plot_acf(series, lags=30, ax=ax4, color="navy", alpha=0.05)
+    ax4.set_title("Autokorrelation (ACF) - Gesamter Trend/Trägheit")
+    ax4.set_xlabel("Verzögerung in Tagen (Lag)")
+    ax4.set_ylabel("Korrelation")
+
+    # Plot 5: Partielle Autokorrelation (PACF)
+    ax5 = plt.subplot(3, 2, 5)
+    plot_pacf(
+        series, lags=30, ax=ax5, color="darkred", alpha=0.05, method="ywm"
+    )
+    ax5.set_title("Partielle Autokorrelation (PACF) - Direkter Einfluss")
+    ax5.set_xlabel("Verzögerung in Tagen (Lag)")
+    ax5.set_ylabel("Partielle Korrelation")
 
     plt.tight_layout()
     plt.show()
